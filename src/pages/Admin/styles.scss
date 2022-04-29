@@ -1,0 +1,11 @@
+@import 'styles/sass/main';
+
+.Admin {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  font: 400 24px/28px $helvetica-regular;
+  color: $blue-dark;
+  background: $gray-light;
+  @include flex(center, center);
+}
