@@ -10,7 +10,7 @@ export const loginAdmin: AdminFetch<ILoginData> = (data) => async (dispatch) => 
     "utf-8"
   ).toString("base64")
 
-  const response = await Axios.post(
+  await Axios.post(
     URLS.ADMIN_LOGIN_URL,
     {
       username: data?.username,
@@ -21,19 +21,15 @@ export const loginAdmin: AdminFetch<ILoginData> = (data) => async (dispatch) => 
         Authorization: `Basic ${authKey64}`
       }
     }
-  ).catch((err) => {
-    console.error(err.message)
-  })
-
-  if (!response) {
-    dispatch({
-      type: AdminActionTypes.LOGIN,
-      payload: { admin: null, error: true }
-    })
-  } else {
+  ).then((response) => {
     dispatch({
       type: AdminActionTypes.LOGIN,
       payload: { admin: response?.data as IAdmin, error: false }
     })
-  }
+  }).catch(() => {
+    dispatch({
+      type: AdminActionTypes.LOGIN,
+      payload: { admin: null, error: true }
+    })
+  })
 }
