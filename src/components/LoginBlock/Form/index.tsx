@@ -6,7 +6,7 @@ import { useTypedSelector } from "store/selectors"
 import classNames from "classnames"
 import Button from "components/Button"
 import { ButtonBgColor } from "components/Button/types"
-import { CheckFieldType } from "./types"
+import { CheckFieldType, WatchFieldType } from "./types"
 import LoginInput from "../LoginInput"
 
 import "./styles.scss"
@@ -35,6 +35,20 @@ const Form: FC = () => {
     return true
   }, [])
 
+  const fieldWatcher = useCallback<WatchFieldType>(
+    (inputValue, errorValue, setError) => {
+      if (errorValue === "Заполните поле" && inputValue.trim()) {
+        setError(null)
+      } else if (
+        errorValue.includes("должен содержать 6 и более символов") &&
+        inputValue.length >= 6
+      ) {
+        setError(null)
+      }
+    },
+    []
+  )
+
   const onSubmitHandler = useCallback<EventFunc<FormEvent>>(
     async (e) => {
       e.preventDefault()
@@ -50,6 +64,18 @@ const Form: FC = () => {
     },
     [username, password, checkField, dispatch]
   )
+
+  useEffect(() => {
+    if (loginError) {
+      fieldWatcher(username, loginError, setLoginError)
+    }
+  }, [username, loginError, fieldWatcher])
+
+  useEffect(() => {
+    if (passwordError) {
+      fieldWatcher(password, passwordError, setPasswordError)
+    }
+  }, [password, passwordError, fieldWatcher])
 
   useEffect(() => {
     if (error) {
