@@ -2,7 +2,7 @@ import Axios from "api/Axios"
 import { URLS } from "api/Axios/types"
 import { Buffer } from "buffer"
 import randkey from "randkey"
-import { AdminActionTypes, AdminFetch, IAdmin, ILoginData } from "./types"
+import { AdminActionTypes, AdminDispatch, AdminFetch, IAdmin, ILoginData } from "./types"
 
 export const loginAdmin: AdminFetch<ILoginData> = (data) => async (dispatch) => {
   const authKey64 = Buffer.from(
@@ -32,4 +32,18 @@ export const loginAdmin: AdminFetch<ILoginData> = (data) => async (dispatch) => 
       payload: { admin: null, error: true }
     })
   })
+}
+
+export const logoutAdmin: AdminDispatch<void> = () => {
+  return {
+    type: AdminActionTypes.LOGOUT,
+    payload: { admin: null }
+  }
+}
+
+export const setAdminMenu: AdminDispatch<string> = (adminMenu) => {
+  return {
+    type: AdminActionTypes.SET_ADMIN_MENU,
+    payload: { adminMenu }
+  }
 }

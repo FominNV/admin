@@ -6,7 +6,7 @@ import { setPageTitle } from "store/common/actions"
 import { Helmet } from "react-helmet-async"
 import { ReactComponent as Logo } from "assets/icons/Admin/logo.svg"
 import { PATHS } from "routes/consts"
-import Form from "components/LoginBlock/Form"
+import Form from "components/Form"
 
 import "./styles.scss"
 

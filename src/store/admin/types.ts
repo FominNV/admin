@@ -3,6 +3,7 @@ import { Dispatch } from "react"
 export interface IAdminState {
   admin: Nullable<IAdmin>
   error: boolean
+  adminMenu: string
 }
 
 export interface ILoginData {
@@ -18,12 +19,13 @@ export interface IAdmin {
   user_id: string
 }
 
-export type AdminDispatch<T> = (value1: T, value2?: T) => AdminAction
+export type AdminDispatch<T> = (value: T) => AdminAction
 export type AdminFetch<T> = (body?: T) => (dispatch: Dispatch<AdminAction>) => Promise<void>
 
 export enum AdminActionTypes {
   LOGIN = "LOGIN",
   LOGOUT = "LOGOUT",
+  SET_ADMIN_MENU = "SET_ADMIN_MENU"
 }
 
 type LoginAction = {
@@ -31,9 +33,14 @@ type LoginAction = {
   payload: { admin: Nullable<IAdmin>, error: boolean }
 }
 
-type LogoutAction = {
-  type: AdminActionTypes.LOGOUT
-  payload: { token: string }
+type SetAdminMenuAction = {
+  type: AdminActionTypes.SET_ADMIN_MENU
+  payload: { adminMenu: string }
 }
 
-export type AdminAction = LoginAction | LogoutAction
+type LogoutAction = {
+  type: AdminActionTypes.LOGOUT
+  payload: { admin: Nullable<IAdmin> }
+}
+
+export type AdminAction = LoginAction | LogoutAction | SetAdminMenuAction

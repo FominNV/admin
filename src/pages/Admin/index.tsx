@@ -1,16 +1,21 @@
-import { FC, useEffect } from "react"
+import { FC, ReactNode, useEffect, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
 import { PATHS } from "routes/consts"
 import { setPageTitle } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
+import AdminLayout from "layouts/AdminLayout"
+import Header from "components/Header"
+import Banner from "components/Banner"
+import Footer from "components/Footer"
+import classNames from "classnames"
+import dataMenu from "./data"
 
 import "./styles.scss"
 
 const Admin: FC = () => {
-  const { admin } = useTypedSelector((state) => state.admin)
-  const { pageTitle } = useTypedSelector((state) => state.common)
+  const { admin, adminMenu } = useTypedSelector((state) => state.admin)
+  const [showBanner, setShowBanner] = useState<boolean>(true)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,16 +32,40 @@ const Admin: FC = () => {
     }
   }, [location, dispatch])
 
-  return (
-    <>
-      <Helmet>
-        <title>{pageTitle}</title>
-      </Helmet>
+  const menu = useMemo<ReactNode>(
+    () =>
+      dataMenu.map((elem) => {
+        const menuClassName = classNames("Admin__menu", {
+          Admin__menu_active: elem.id === adminMenu
+        })
 
+        return (
+          <div
+            key={`admin_menu_${elem.id}`}
+            className={menuClassName}
+          >
+            {elem.menu}
+          </div>
+        )
+      }),
+    [adminMenu]
+  )
+
+  return (
+    <AdminLayout>
       <div className="Admin">
-        Admin Page
+        <Header />
+        <div className="Admin__content">
+          <Banner
+            active={showBanner}
+            setState={setShowBanner}
+          />
+          <div className="Admin__logo">{adminMenu}</div>
+          {menu}
+        </div>
+        <Footer />
       </div>
-    </>
+    </AdminLayout>
   )
 }
 
