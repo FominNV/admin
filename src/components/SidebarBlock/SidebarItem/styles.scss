@@ -1,0 +1,36 @@
+@import 'styles/sass/main';
+
+.SidebarItem {
+  @include btn-reset;
+  @include flex(_, center);
+  width: 100%;
+  height: 57.5px;
+  padding-left: 28.5px;
+  font: 400 15px/17px $helvetica-regular;
+  color: $blue-dark;
+  letter-spacing: -0.23px;
+  box-shadow: inset 0px -1px 0px $gray-border;
+  transition: background 0.25s;
+
+  &:hover {
+    background: rgba(#000000, 0.05);
+  }
+
+  &__icon {
+    margin-right: 11px;
+    color: $gray-low-light;
+  }
+
+  &_active {
+    color: $blue;
+    box-shadow: inset 0px -1px 0px $gray-border, inset 4px 0px 0px $blue;
+
+    &:hover {
+      background: $white;
+    }
+
+    .SidebarItem__icon {
+      color: $blue;
+    }
+  }
+}
