@@ -1,0 +1,50 @@
+@import 'styles/sass/main';
+
+.Checkbox {
+  @include btn-reset;
+  @include flex;
+  height: 13px;
+  margin-top: 8px;
+  transition: all 0.25s;
+
+  &__icon {
+    opacity: 0;
+  }
+
+  &__custom {
+    @include flex(center, center);
+    width: 13px;
+    min-width: 13px;
+    height: 13px;
+    margin-right: 9px;
+    border: 0.5px solid $gray-blue;
+    border-radius: 1px;
+
+    &_checked {
+      background: $blue;
+      border-radius: 2px;
+      border-color: $blue;
+
+      .Checkbox__icon {
+        opacity: 1;
+      }
+    }
+
+    &_disabled {
+      background: $gray-light;
+      border: 0.5px solid $gray-blue;
+      border-radius: 1px;
+
+      .Checkbox__icon {
+        opacity: 0;
+      }
+    }
+  }
+
+  &__label {
+    font: 400 10px/12px $roboto-regular;
+    color: $black-gray;
+    letter-spacing: -0.18px;
+    cursor: pointer;
+  }
+}
