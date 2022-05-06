@@ -1,0 +1,134 @@
+@import 'styles/sass/main';
+
+.Config {
+  position: relative;
+  width: calc(100% - 362px);
+  align-self: stretch;
+  min-height: calc(100vh - 256px);
+  padding: 20px 18px 18px 18px;
+  background: $white;
+  box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
+  border-radius: 9px;
+
+  @media (max-width: $m), (max-device-width: $m) {
+    width: 100%;
+    min-height: fit-content;
+    margin-top: 16px;
+  }
+
+  &__header {
+    font: 500 18px/21px $roboto-medium;
+    color: $blue-dark;
+    letter-spacing: -0.44px;
+  }
+
+  &__content {
+    width: 100%;
+    height: calc(100% - 93px);
+    margin-top: 42px;
+  }
+
+  &__inputs {
+    @include flex(_, flex-end);
+    width: 100%;
+    flex-wrap: wrap;
+    column-gap: 20px;
+
+    &__item {
+      width: calc(50% - 10px);
+
+      @media (max-width: $mx), (max-device-width: $mx) {
+        width: 100%;
+      }
+      @media (max-width: $md), (max-device-width: $md) {
+        margin-top: -16px;
+      }
+
+      &_color {
+        width: calc(50% - 48px);
+
+        @media (max-width: $mx), (max-device-width: $mx) {
+          width: calc(100% - 38px);
+        }
+      }
+    }
+  }
+
+  &__add-color {
+    @include btn-reset;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 16px;
+    margin-left: -12px;
+    border: 1px solid $gray-blue;
+    border-radius: 4px;
+    transition: all 0.25s;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      margin-bottom: 32px;
+    }
+
+    &__icon {
+      position: absolute;
+      background: $gray-blue;
+
+      &_h {
+        top: calc(50% - 1px);
+        left: calc(50% - 8px);
+        width: 16px;
+        height: 2px;
+      }
+
+      &_v {
+        top: calc(50% - 8px);
+        left: calc(50% - 1px);
+        width: 2px;
+        height: 16px;
+      }
+    }
+
+    &:hover {
+      border-color: $blue;
+
+      .Config__add-color__icon {
+        background: $blue;
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      .Config__add-color__icon {
+        background: $blue;
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  &__checkboxes {
+    @media (max-width: $md), (max-device-width: $md) {
+      margin-top: -16px;
+    }
+  }
+
+  &__footer {
+    @include flex;
+    position: relative;
+    width: calc(100% + 12px);
+    height: 30px;
+
+    @media (max-width: $m), (max-device-width: $m) {
+      margin-top: 12px;
+    }
+  }
+
+  &__btn {
+    width: 110px;
+    height: 100%;
+    margin-right: 12px;
+
+    &_right {
+      margin-left: auto;
+    }
+  }
+}
