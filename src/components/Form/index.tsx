@@ -7,7 +7,7 @@ import classNames from "classnames"
 import Button from "components/Button"
 import { ButtonBgColor } from "components/Button/types"
 import { CheckFieldType, WatchFieldType } from "./types"
-import LoginInput from "../LoginInput"
+import Input from "../Input"
 
 import "./styles.scss"
 
@@ -102,7 +102,7 @@ const Form: FC = () => {
         onSubmit={onSubmitHandler}
       >
         <div className={errorClassName}>{formError}</div>
-        <LoginInput
+        <Input
           key="email"
           id="email"
           label="Почта"
@@ -112,7 +112,7 @@ const Form: FC = () => {
           error={loginError}
           setState={setUsername}
         />
-        <LoginInput
+        <Input
           key="password"
           id="password"
           label="Пароль"
