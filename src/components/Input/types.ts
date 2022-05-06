@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 
-export interface IAdminInputProps {
+export interface IInputProps {
   id: string
   label: string
   type: string

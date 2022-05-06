@@ -12,11 +12,11 @@ import classNames from "classnames"
 
 import { ReactComponent as Show } from "assets/icons/LoginInput/show.svg"
 import { ReactComponent as Hide } from "assets/icons/LoginInput/hide.svg"
-import { IAdminInputProps } from "./types"
+import { IInputProps } from "./types"
 
 import "./styles.scss"
 
-const LoginInput: FC<IAdminInputProps> = ({
+const Input: FC<IInputProps> = ({
   id,
   label,
   type,
@@ -63,17 +63,17 @@ const LoginInput: FC<IAdminInputProps> = ({
     }
   }, [])
 
-  const inputClassName = classNames("LoginInput__input", {
-    LoginInput__input_error: error
+  const inputClassName = classNames("Input__input", {
+    Input__input_error: error
   })
-  const clearButtonClassName = classNames("LoginInput__btn", {
-    LoginInput__btn_active: innerValue
+  const clearButtonClassName = classNames("Input__btn", {
+    Input__btn_active: innerValue
   })
-  const errorClassName = classNames("LoginInput__error", {
-    LoginInput__error_active: error
+  const errorClassName = classNames("Input__error", {
+    Input__error_active: error
   })
-  const watchPassword = classNames("LoginInput__watch-password", {
-    "LoginInput__watch-password_active": type === "password" && innerValue
+  const watchPassword = classNames("Input__watch-password", {
+    "Input__watch-password_active": type === "password" && innerValue
   })
 
   const showButtonIcon = useMemo(
@@ -84,10 +84,10 @@ const LoginInput: FC<IAdminInputProps> = ({
   const currentType = type === "password" ? innerType : type
 
   return (
-    <div className="LoginInput">
-      <div className="LoginInput__header">
+    <div className="Input">
+      <div className="Input__header">
         <label
-          className="LoginInput__label"
+          className="Input__label"
           htmlFor={id}
         >
           {label}
@@ -101,7 +101,7 @@ const LoginInput: FC<IAdminInputProps> = ({
         </button>
       </div>
 
-      <div className="LoginInput__input-block">
+      <div className="Input__input-block">
         <input
           id={id}
           type={currentType}
@@ -127,4 +127,4 @@ const LoginInput: FC<IAdminInputProps> = ({
   )
 }
 
-export default LoginInput
+export default Input

@@ -1,6 +1,6 @@
 @import 'styles/sass/main';
 
-.LoginInput {
+.Input {
   width: 100%;
   margin-bottom: 16px;
 
@@ -88,8 +88,8 @@
   }
 
   &__watch-password {
-    display: none;
     @include btn-reset;
+    display: none;
     position: absolute;
     right: 15px;
     top: calc(50% - 13px);
