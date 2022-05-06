@@ -1,7 +1,9 @@
 // screen
 $tiny: 320px;
 $sm: 575px;
+$m: 650px;
 $md: 767px;
+$mx: 830px;
 $l: 900px;
 $lg: 1023px;
 $x: 1132px;
@@ -14,12 +16,20 @@ $white: #fff;
 $red: #c4183c;
 $blue: #007bff;
 $blue-dark: #3d5170;
+$blue-gray: #767f9d;
+$blue-dark-gray: #868e96;
+$blue-name: #818ea3;
 $green: #0ec261;
 $gray: #999999;
+$gray-dark: #5a6169;
 $gray-light: #e9ecef;
+$gray-low-light: #cacedb;
+$gray-border: #e1e5eb;
 $gray-blue: #becad6;
 
 // fonts
 $helvetica-regular: 'Helvetica-Regular';
+$helvetica-bold: 'Helvetica-Bold';
 $roboto-regular: 'Roboto-Regular';
 $roboto-medium: 'Roboto-Medium';
+$popins-semibold: 'Poppins-SemiBold';
