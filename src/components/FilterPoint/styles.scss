@@ -1,0 +1,31 @@
+@import 'styles/sass/main';
+
+.FilterPoint {
+  position: relative;
+  @include btn-reset;
+  display: none;
+  height: 30px;
+  padding: 4px 6px;
+  background: $gray-light;
+  border-radius: 6px;
+
+  &_active {
+    display: block;
+  }
+
+  &__label {
+    position: absolute;
+    top: -16px;
+    left: 4px;
+    margin-right: auto;
+    font: 400 10px/12px $roboto-regular;
+    color: $blue-dark;
+    letter-spacing: -0.5px;
+  }
+
+  &__value {
+    font: 400 12px/14px $roboto-regular;
+    color: $blue-dark;
+    letter-spacing: -0.5px;
+  }
+}
