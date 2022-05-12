@@ -1,0 +1,48 @@
+@import 'styles/sass/main';
+
+.Paginater {
+  @include flex(center);
+  width: 100%;
+  height: 18px;
+  user-select: none;
+
+  &__buttons {
+    @include flex(_, center);
+    height: 100%;
+    column-gap: 7px;
+  }
+
+  &__dots,
+  &__btn {
+    @include btn-reset;
+    display: none;
+    height: 100%;
+    min-width: 18px;
+    font: 400 15px/17px $helvetica-regular;
+    color: $blue;
+    transition: color 0.3s;
+
+    &_active {
+      @include flex(center, center);
+      background: $blue;
+      color: $white;
+      border: 1px solid $blue;
+      border-radius: 50%;
+      box-sizing: border-box;
+      cursor: default;
+    }
+
+    &_show {
+      @include flex(center, center);
+    }
+
+    &:disabled {
+      color: $gray-light;
+      cursor: default;
+    }
+  }
+
+  &__dots {
+    cursor: default;
+  }
+}
