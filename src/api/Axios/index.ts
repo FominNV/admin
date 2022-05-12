@@ -1,6 +1,8 @@
 import axios from "axios"
+import { URLS } from "./data"
 
 export default axios.create({
+  baseURL: URLS.BASE_URL,
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "true",
