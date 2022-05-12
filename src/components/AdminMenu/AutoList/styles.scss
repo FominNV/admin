@@ -1,0 +1,76 @@
+@import 'styles/sass/main';
+
+.AutoList {
+  width: 100%;
+  padding: 15px 20px 20px;
+  background: $white;
+  box-shadow: 0px 1px 0px rgba(90, 97, 105, 0.11),
+    0px 2px 4px rgba(90, 97, 105, 0.12), 0px 5px 5px rgba(90, 97, 105, 0.06),
+    0px 3.5px 35px rgba(90, 97, 105, 0.1);
+  border-radius: 9px;
+  overflow-x: auto;
+
+  &__header {
+    @include flex(space-between, flex-end);
+    min-width: 900px;
+  }
+
+  &__selects {
+    @include flex(_, flex-end);
+    column-gap: 15px;
+  }
+
+  &__result {
+    font: 400 18px/21px $helvetica-regular;
+    color: $black;
+    letter-spacing: -0.5px;
+  }
+
+  &__buttons {
+    @include flex;
+    column-gap: 15px;
+
+    &__item {
+      width: 95px;
+      height: 30px;
+    }
+  }
+
+  &__btn-clear-filter {
+    width: 40px;
+    height: 30px;
+  }
+
+  &__btn-set-filter {
+    width: 95px;
+    height: 30px;
+  }
+
+  &__car-img {
+    width: 100px;
+    border-radius: 8px;
+  }
+
+  &__car-number {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 4px 8px;
+    font: 400 14px/16px $roboto-regular;
+    color: $black;
+    text-transform: uppercase;
+    border: 1px solid $gray;
+    border-radius: 4px;
+  }
+
+  &__table {
+    margin-top: 15px;
+    padding-right: 15px;
+    min-width: 900px;
+  }
+
+  &__paginater {
+    @include flex(_, center);
+    width: 100%;
+    height: 40px;
+  }
+}
