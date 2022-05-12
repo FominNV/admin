@@ -1,47 +1,48 @@
 import { ReactComponent as Card } from "assets/icons/Sidebar/card.svg"
 import { ReactComponent as Post } from "assets/icons/Sidebar/post.svg"
-import { ReactComponent as Order } from "assets/icons/Sidebar/order.svg"
-import { ReactComponent as Menu4 } from "assets/icons/Sidebar/menu-4.svg"
-import { ReactComponent as Menu5 } from "assets/icons/Sidebar/menu-5.svg"
-import { ReactComponent as Menu6 } from "assets/icons/Sidebar/menu-6.svg"
-import { ReactComponent as Menu7 } from "assets/icons/Sidebar/menu-7.svg"
+
 import { ISidebarItem } from "./types"
 
 const dataSidebar: ISidebarItem[] = [
   {
-    id: "menu_1",
+    id: "menu_auto_card",
     name: "Карточка автомобиля",
     icon: <Card />
   },
   {
-    id: "menu_2",
+    id: "menu_order",
+    name: "Заказы",
+    icon: <Post />
+  },
+  {
+    id: "menu_auto_post",
     name: "Список авто",
     icon: <Post />
   },
   {
-    id: "menu_3",
-    name: "Заказы",
-    icon: <Order />
+    id: "menu_category",
+    name: "Категории Авто",
+    icon: <Post />
   },
   {
-    id: "menu_4",
-    name: "Menu 4",
-    icon: <Menu4 />
+    id: "menu_city",
+    name: "Города",
+    icon: <Post />
   },
   {
-    id: "menu_5",
-    name: "Menu 5",
-    icon: <Menu5 />
+    id: "menu_address",
+    name: "Адреса",
+    icon: <Post />
   },
   {
-    id: "menu_6",
-    name: "Menu 6",
-    icon: <Menu6 />
+    id: "menu_rate",
+    name: "Тарифы",
+    icon: <Post />
   },
   {
-    id: "menu_7",
-    name: "Menu 7",
-    icon: <Menu7 />
+    id: "menu_status",
+    name: "Статусы заказов",
+    icon: <Post />
   }
 ]
 export default dataSidebar

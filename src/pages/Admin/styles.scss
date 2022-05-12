@@ -33,6 +33,7 @@
 
     &_active {
       display: block;
+      animation: show-menu 0.4s 1 ease-in;
     }
   }
 }

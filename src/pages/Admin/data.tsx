@@ -1,4 +1,11 @@
 import AutoCard from "components/AdminMenu/AutoCardBlock/AutoCard"
+import AutoList from "components/AdminMenu/AutoList"
+import Category from "components/AdminMenu/Category"
+import City from "components/AdminMenu/City"
+import Order from "components/AdminMenu/OrderBlock/Order"
+import Point from "components/AdminMenu/Point"
+import Rate from "components/AdminMenu/Rate"
+import Status from "components/AdminMenu/Status"
 import { IAdminMenu } from "./types"
 
 const dataMenu: IAdminMenu[] = [
@@ -7,28 +14,32 @@ const dataMenu: IAdminMenu[] = [
     menu: <AutoCard />
   },
   {
-    id: "Список авто",
-    menu: "Список авто"
-  },
-  {
     id: "Заказы",
-    menu: "Заказы"
+    menu: <Order />
   },
   {
-    id: "Menu 4",
-    menu: "Menu 4"
+    id: "Список авто",
+    menu: <AutoList />
   },
   {
-    id: "Menu 5",
-    menu: "Menu 5"
+    id: "Категории Авто",
+    menu: <Category />
   },
   {
-    id: "Menu 6",
-    menu: "Menu 6"
+    id: "Города",
+    menu: <City />
   },
   {
-    id: "Menu 7",
-    menu: "Menu 7"
+    id: "Адреса",
+    menu: <Point />
+  },
+  {
+    id: "Тарифы",
+    menu: <Rate />
+  },
+  {
+    id: "Статусы заказов",
+    menu: <Status />
   }
 ]
 export default dataMenu

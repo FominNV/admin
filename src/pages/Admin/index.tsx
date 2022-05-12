@@ -15,7 +15,7 @@ import "./styles.scss"
 
 const Admin: FC = () => {
   const { admin, adminMenu } = useTypedSelector((state) => state.admin)
-  const [showBanner, setShowBanner] = useState<boolean>(true)
+  const [showBanner, setShowBanner] = useState<boolean>(false)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
