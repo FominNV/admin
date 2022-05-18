@@ -9,7 +9,7 @@ import {
 } from "react"
 import { useTypedSelector } from "store/selectors"
 import { useDispatch } from "react-redux"
-import { getCities, getOrders, getOrderStatuses, getRates } from "store/admin/actions"
+import { getEntities } from "store/admin/actions"
 import { setLoading } from "store/common/actions"
 import Button from "components/Button"
 import Select from "components/Select"
@@ -17,6 +17,8 @@ import Paginater from "components/Paginater"
 import { ButtonBgColor } from "components/Button/types"
 import { IFilterState, IFilterPoints } from "components/FilterPoint/types"
 import Loading from "components/Loading"
+import { URLS } from "api/Axios/data"
+import { AdminActionTypes } from "store/admin/types"
 import OrderCard from "../OrderCard"
 import FilterPoint from "../../../FilterPoint"
 import { dataFilterPoint } from "./data"
@@ -24,14 +26,19 @@ import { dataFilterPoint } from "./data"
 import "./styles.scss"
 
 const Order: FC = () => {
-  const { admin, adminMenu, orders, cities, rates, statuses } = useTypedSelector(
-    (state) => state.admin
-  )
+  const {
+    admin,
+    adminMenu,
+    orders,
+    cities,
+    rates,
+    statuses
+  } = useTypedSelector((state) => state.admin)
   const { loading } = useTypedSelector((state) => state.common)
   const [pageNumber, setPageNumber] = useState<number>(1)
-  const [city, setCity] = useState<Nullable<IFilterState>>(null)
-  const [rate, setRate] = useState<Nullable<IFilterState>>(null)
-  const [status, setStatus] = useState<Nullable<IFilterState>>(null)
+  const [city, setCity] = useState<IFilterState>({ id: "", name: "Любой" })
+  const [rate, setRate] = useState<IFilterState>({ id: "", name: "Любой" })
+  const [status, setStatus] = useState<IFilterState>({ id: "", name: "Любой" })
   const [filterPoints, setFilterPoints] = useState<IFilterPoints>({
     city: null,
     rate: null,
@@ -42,7 +49,7 @@ const Order: FC = () => {
   const setCityState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
-        setCity(null)
+        setCity({ id: "", name: "Любой" })
       } else {
         cities?.data.map((elem) => {
           if (elem.name === name) {
@@ -60,7 +67,7 @@ const Order: FC = () => {
   const setStatusState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
-        setStatus(null)
+        setStatus({ id: "", name: "Любой" })
       } else {
         statuses?.data.map((elem) => {
           if (elem.name === name) {
@@ -77,7 +84,7 @@ const Order: FC = () => {
   const setRateState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
-        setRate(null)
+        setRate({ id: "", name: "Любой" })
       } else {
         rates?.data.map((elem) => {
           if (elem.rateTypeId && elem.rateTypeId.name === name) {
@@ -95,14 +102,28 @@ const Order: FC = () => {
   const loadOrders = useCallback<VoidFunc<Nullable<string | number>>>(
     async (token, page, cityId, rateId, statusId) => {
       dispatch(setLoading(true))
-      await dispatch(getOrders(token, page, cityId, rateId, statusId))
+      await dispatch(
+        getEntities(
+          URLS.ADMIN_ORDER_URL,
+          AdminActionTypes.GET_ORDERS,
+          { page, cityId, rateId, statusId },
+          token as string
+        )
+      )
       dispatch(setLoading(false))
     },
     [dispatch]
   )
 
   const activateFilterPoints = useCallback<EventFunc<MouseEvent>>(() => {
-    setFilterPoints({ city, rate, status })
+    const filterCity = city.id ? city : null
+    const filterRate = rate.id ? rate : null
+    const filterStatus = status.id ? status : null
+    setFilterPoints({
+      city: filterCity,
+      rate: filterRate,
+      status: filterStatus
+    })
     setPageNumber(1)
   }, [city, rate, status])
 
@@ -115,7 +136,9 @@ const Order: FC = () => {
     if (admin && adminMenu === "Заказы") {
       const currentCityId = filterPoints.city ? filterPoints.city.id : null
       const currentRateId = filterPoints.rate ? filterPoints.rate?.id : null
-      const currentStatusId = filterPoints.status ? filterPoints.status?.id : null
+      const currentStatusId = filterPoints.status
+        ? filterPoints.status?.id
+        : null
       loadOrders(
         admin.access_token,
         pageNumber - 1,
@@ -127,17 +150,22 @@ const Order: FC = () => {
   }, [admin, adminMenu, pageNumber, filterPoints, loadOrders])
 
   useEffect(() => {
-    if (!cities && admin) dispatch(getCities())
-    if (!rates && admin) dispatch(getRates())
-    if (!statuses && admin) dispatch(getOrderStatuses())
+    if (!cities && admin) { dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_CATEGORIES)) }
+    if (!rates && admin) { dispatch(getEntities(URLS.RATE_URL, AdminActionTypes.GET_RATES)) }
+    if (!statuses && admin) {
+      dispatch(
+        getEntities(URLS.ORDER_STATUS_URL, AdminActionTypes.GET_ORDER_STATUSES)
+      )
+    }
   }, [cities, rates, statuses, admin, dispatch])
 
-  const result = useMemo<ReactNode>(
-    () =>
-      !loading &&
-      orders && <div className="Order__result">Всего: {orders.count}</div>,
-    [loading, orders]
-  )
+  useEffect(() => {
+    if (!filterPoints.city) setCity({ id: "", name: "Любой" })
+    if (!filterPoints.rate) setRate({ id: "", name: "Любой" })
+    if (!filterPoints.status) setStatus({ id: "", name: "Любой" })
+  }, [filterPoints])
+
+  const result = orders ? orders.count : 0
 
   const citySelect = useMemo<ReactNode>(() => {
     if (cities) {
@@ -147,13 +175,14 @@ const Order: FC = () => {
           key="order_city_select"
           id="order_city_select"
           label="Город"
+          value={city.name}
           data={["Любой", ...data]}
           callback={setCityState}
         />
       )
     }
     return false
-  }, [cities, setCityState])
+  }, [cities, city.name, setCityState])
 
   const rateSelect = useMemo<ReactNode>(() => {
     if (rates) {
@@ -165,13 +194,14 @@ const Order: FC = () => {
           key="order_rate_select"
           id="order_rate_select"
           label="Тариф"
+          value={rate.name}
           data={["Любой", ...data]}
           callback={setRateState}
         />
       )
     }
     return false
-  }, [rates, setRateState])
+  }, [rates, rate.name, setRateState])
 
   const statusSelect = useMemo<ReactNode>(() => {
     if (statuses) {
@@ -181,13 +211,14 @@ const Order: FC = () => {
           key="order_status_select"
           id="order_status_select"
           label="Статус"
+          value={status.name}
           data={["Любой", ...data]}
           callback={setStatusState}
         />
       )
     }
     return false
-  }, [statuses, setStatusState])
+  }, [statuses, status.name, setStatusState])
 
   const orderFilterPoints = useMemo<ReactNode>(
     () =>
@@ -199,7 +230,6 @@ const Order: FC = () => {
             id={elem.id}
             name={elem.name}
             value={value || null}
-            active={Boolean(filterPoints[elem.id])}
             setState={setFilterPoints}
           />
         )
@@ -218,7 +248,12 @@ const Order: FC = () => {
           />
         </div>
       ),
-    [filterPoints.city, filterPoints.rate, filterPoints.status, clearFilterPoints]
+    [
+      filterPoints.city,
+      filterPoints.rate,
+      filterPoints.status,
+      clearFilterPoints
+    ]
   )
 
   const cards = useMemo<ReactNode>(
@@ -227,17 +262,7 @@ const Order: FC = () => {
       orders.data.map((elem) => (
         <OrderCard
           key={`order_card_${elem.id}`}
-          id={elem.id}
-          color={elem.color}
-          dateFrom={elem.dateFrom}
-          dateTo={elem.dateTo}
-          isFullTank={elem.isFullTank}
-          isNeedChildChair={elem.isNeedChildChair}
-          isRightWheel={elem.isRightWheel}
-          price={elem.price}
-          car={elem.carId}
-          city={elem.cityId}
-          point={elem.pointId}
+          order={elem}
         />
       )),
     [orders]
@@ -268,17 +293,19 @@ const Order: FC = () => {
           {citySelect}
           {rateSelect}
           {statusSelect}
-          {result}
+          <div className="Order__result">
+            Всего: {result}
+            <div className="Order__filter-points">{orderFilterPoints}</div>
+          </div>
         </div>
 
         <div className="Order__buttons">
-          {orderFilterPoints}
           {clearFilterButton}
           <div className="Order__btn-set-filter">
             <Button
               name="Применить"
               bgColor={ButtonBgColor.BLUE}
-              disabled={!city && !rate && !status}
+              disabled={!city.id && !rate.id && !status.id}
               onClick={activateFilterPoints}
             />
           </div>

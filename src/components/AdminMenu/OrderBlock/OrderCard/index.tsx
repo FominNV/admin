@@ -8,19 +8,22 @@ import { IOrderCardProps } from "./types"
 
 import "./styles.scss"
 
-const OrderCard: FC<IOrderCardProps> = ({
-  id,
-  color,
-  dateFrom,
-  dateTo,
-  isFullTank,
-  isNeedChildChair,
-  isRightWheel,
-  price,
-  car,
-  city,
-  point
-}) => {
+const OrderCard: FC<IOrderCardProps> = ({ order }) => {
+  const {
+    id,
+    color,
+    dateFrom,
+    dateTo,
+    isFullTank,
+    isNeedChildChair,
+    isRightWheel,
+    price,
+    carId,
+    cityId,
+    pointId,
+    orderStatusId
+  } = order
+
   const addServices = useMemo<ReactNode>(() => {
     const servises = [isFullTank, isNeedChildChair, isRightWheel]
     return dataOrderAddService.map((elem, index) => {
@@ -66,26 +69,27 @@ const OrderCard: FC<IOrderCardProps> = ({
 
   const img = useMemo<ReactNode>(
     () =>
-      (car ? (
+      (carId ? (
         <img
           className="OrderCard__img"
-          src={car.thumbnail.path}
+          src={carId.thumbnail.path}
           alt="car"
         />
       ) : (
         <p className="OrderCard__not-img">НЕТ ФОТО</p>
       )),
-    [car]
+    [carId]
   )
 
-  const carName = car ? car.name : "Неизвестный автомобиль"
-  const place = city && point && (
+  const carName = carId ? carId.name : "Неизвестный автомобиль"
+  const place = cityId && pointId && (
     <>
       {" "}
-      в <span className="OrderCard__text_dark">{city.name},</span>
-      <span className="OrderCard__text_nowrap"> {point.address}</span>
+      в <span className="OrderCard__text_dark">{cityId.name},</span>
+      <span className="OrderCard__text_nowrap"> {pointId.address}</span>
     </>
   )
+  const status = orderStatusId ? orderStatusId.name : "НЕ УКАЗАН"
 
   const date = `${
     dateFrom ? format(new Date(dateFrom), "dd.MM.yyyy kk:mm") : "Фиг знает"
@@ -105,6 +109,9 @@ const OrderCard: FC<IOrderCardProps> = ({
         <p className="OrderCard__text">{date}</p>
         <p className="OrderCard__text">
           Цвет: <span className="OrderCard__text_dark">{color}</span>
+        </p>
+        <p className="OrderCard__text">
+          Статус заказа: <span className="OrderCard__text_dark">{status}</span>
         </p>
       </div>
 

@@ -1,17 +1,7 @@
-import { ICar, ICity, IPoint } from "store/admin/types"
+import { IOrder } from "store/admin/types"
 
 export interface IOrderCardProps {
-  id: string
-  color: string,
-  dateFrom: number,
-  dateTo: number,
-  isFullTank: boolean,
-  isNeedChildChair: boolean,
-  isRightWheel: boolean,
-  price: number,
-  car: Nullable<ICar>
-  city: Nullable<ICity>
-  point: Nullable<IPoint>
+  order: IOrder
 }
 
 export interface IOrderButton {
