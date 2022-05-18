@@ -1,7 +1,9 @@
+import { URLS } from "api/Axios/data"
 import Table from "components/Table"
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
-import { getPoints } from "store/admin/actions"
+import { getEntities } from "store/admin/actions"
+import { AdminActionTypes } from "store/admin/types"
 import { setLoading } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
 import { dataTableColgroup, dataHeads } from "./data"
@@ -15,7 +17,7 @@ const Point: FC = () => {
 
   const loadPoints = useCallback<VoidFunc<number>>(async (page) => {
     dispatch(setLoading(true))
-    await dispatch(getPoints())
+    await dispatch(getEntities(URLS.POINT_URL, AdminActionTypes.GET_POINTS))
     dispatch(setLoading(false))
   }, [dispatch])
 

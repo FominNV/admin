@@ -1,3 +1,4 @@
+import { URLS } from "api/Axios/data"
 import { Dispatch } from "react"
 
 export interface IAdminState {
@@ -118,8 +119,21 @@ export interface IRateType {
 }
 
 export type AdminDispatch<T> = (value: T) => AdminAction
-export type AdminFetch<T> = (
-  ...args: T[]
+export type AdminFetch = (
+  data: ILoginData,
+) => (dispatch: Dispatch<AdminAction>) => Promise<void>
+export type EntityFetch = (
+  url: URLS,
+  type:
+    | AdminActionTypes.GET_ORDERS
+    | AdminActionTypes.GET_CITIES
+    | AdminActionTypes.GET_RATES
+    | AdminActionTypes.GET_CARS
+    | AdminActionTypes.GET_CATEGORIES
+    | AdminActionTypes.GET_POINTS
+    | AdminActionTypes.GET_ORDER_STATUSES,
+    params?: { [index: string]: Nullable<string | number> },
+    token?: string,
 ) => (dispatch: Dispatch<AdminAction>) => Promise<void>
 
 export enum AdminActionTypes {
@@ -152,37 +166,37 @@ type SetAdminMenuAction = {
 
 type GetOrdersAction = {
   type: AdminActionTypes.GET_ORDERS
-  payload: { orders: Nullable<FetchData<IOrder[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetCitiesAction = {
   type: AdminActionTypes.GET_CITIES
-  payload: { cities: Nullable<FetchData<ICity[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetRatesAction = {
   type: AdminActionTypes.GET_RATES
-  payload: { rates: Nullable<FetchData<IRate[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetCarsAction = {
   type: AdminActionTypes.GET_CARS
-  payload: { cars: Nullable<FetchData<ICar[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetCategoriesAction = {
   type: AdminActionTypes.GET_CATEGORIES
-  payload: { categories: Nullable<FetchData<ICategory[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetPointsAction = {
   type: AdminActionTypes.GET_POINTS
-  payload: { points: Nullable<FetchData<IPoint[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 type GetOrderStatusesAction = {
   type: AdminActionTypes.GET_ORDER_STATUSES
-  payload: { statuses: Nullable<FetchData<IOrderStatus[]>>; error: boolean }
+  payload: { entities: Nullable<IResponse>; error: boolean }
 }
 
 export type AdminAction =

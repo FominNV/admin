@@ -14,8 +14,7 @@ import { ISelectProps } from "./types"
 
 import "./styles.scss"
 
-const Select: FC<ISelectProps> = ({ id, label, data, callback }) => {
-  const [innerValue, setInnerValue] = useState<string>("")
+const Select: FC<ISelectProps> = ({ id, label, data, value, callback }) => {
   const [showDataBlock, setShowDataBlock] = useState<boolean>(false)
 
   const onClickHandler = useCallback<
@@ -31,7 +30,6 @@ const Select: FC<ISelectProps> = ({ id, label, data, callback }) => {
     (e) => {
       e.preventDefault()
       callback(e.currentTarget.name)
-      setInnerValue(e.currentTarget.name)
     },
     [callback]
   )
@@ -57,13 +55,6 @@ const Select: FC<ISelectProps> = ({ id, label, data, callback }) => {
     [data, id, onClickHandler, onMouseDownHandler]
   )
 
-  useEffect(() => {
-    if (data) {
-      callback(data[0])
-      setInnerValue(data[0])
-    }
-  }, [data, callback])
-
   const dataBlockClassName = classNames("Select__data-block", {
     "Select__data-block_active": showDataBlock
   })
@@ -82,7 +73,7 @@ const Select: FC<ISelectProps> = ({ id, label, data, callback }) => {
           id={id}
           type="text"
           className="Select__select"
-          value={innerValue}
+          value={value}
           name={label}
           onBlur={onBlurHandler}
           onClick={onClickHandler}

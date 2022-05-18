@@ -4,7 +4,7 @@ import { IFilterPointProps } from "./types"
 
 import "./styles.scss"
 
-const FilterPoint: FC<IFilterPointProps> = ({ id, name, value, active, setState }) => {
+const FilterPoint: FC<IFilterPointProps> = ({ id, name, value, setState }) => {
   const onClickHandler = useCallback<EventFunc<MouseEvent>>(() => {
     setState((state) => {
       const newState = { ...state }
@@ -14,7 +14,7 @@ const FilterPoint: FC<IFilterPointProps> = ({ id, name, value, active, setState 
   }, [id, setState])
 
   const filterPointClassName = classNames("FilterPoint", {
-    FilterPoint_active: active
+    FilterPoint_active: value
   })
 
   return (
@@ -22,7 +22,7 @@ const FilterPoint: FC<IFilterPointProps> = ({ id, name, value, active, setState 
       className={filterPointClassName}
       onClick={onClickHandler}
     >
-      <p className="FilterPoint__label">{name}:</p>
+      {/* <p className="FilterPoint__label">{name}:</p> */}
       <p className="FilterPoint__value">
         {value}
       </p>

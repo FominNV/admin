@@ -1,7 +1,9 @@
+import { URLS } from "api/Axios/data"
 import Table from "components/Table"
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
-import { getOrderStatuses, getRates } from "store/admin/actions"
+import { getEntities } from "store/admin/actions"
+import { AdminActionTypes } from "store/admin/types"
 import { setLoading } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
 import { dataTableColgroup, dataHeads } from "./data"
@@ -15,7 +17,7 @@ const Status: FC = () => {
 
   const loadStatuses = useCallback<VoidFunc<number>>(async (page) => {
     dispatch(setLoading(true))
-    await dispatch(getOrderStatuses())
+    await dispatch(getEntities(URLS.ORDER_STATUS_URL, AdminActionTypes.GET_ORDER_STATUSES))
     dispatch(setLoading(false))
   }, [dispatch])
 

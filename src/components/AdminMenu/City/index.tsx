@@ -1,7 +1,9 @@
+import { URLS } from "api/Axios/data"
 import Table from "components/Table"
 import { FC, ReactNode, useCallback, useEffect, useMemo } from "react"
 import { useDispatch } from "react-redux"
-import { getCities } from "store/admin/actions"
+import { getEntities } from "store/admin/actions"
+import { AdminActionTypes } from "store/admin/types"
 import { setLoading } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
 import { dataTableColgroup, dataHeads } from "./data"
@@ -15,7 +17,7 @@ const City: FC = () => {
 
   const loadCities = useCallback<VoidFunc<number>>(async () => {
     dispatch(setLoading(true))
-    await dispatch(getCities())
+    await dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_CITIES))
     dispatch(setLoading(false))
   }, [dispatch])
 

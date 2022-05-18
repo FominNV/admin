@@ -1,11 +1,3 @@
-import Button from "components/Button"
-import { ButtonBgColor } from "components/Button/types"
-import FilterPoint from "components/FilterPoint"
-import { IFilterPoints, IFilterState } from "components/FilterPoint/types"
-import Paginater from "components/Paginater"
-import Select from "components/Select"
-import Table from "components/Table"
-import useFormatNumber from "hooks/useFormatNumber"
 import {
   FC,
   MouseEvent,
@@ -16,12 +8,19 @@ import {
   useState
 } from "react"
 import { useDispatch } from "react-redux"
-import {
-  getCars,
-  getCategories
-} from "store/admin/actions"
-import { setLoading } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
+import { setLoading } from "store/common/actions"
+import { getEntities } from "store/admin/actions"
+import Table from "components/Table"
+import Button from "components/Button"
+import Select from "components/Select"
+import Paginater from "components/Paginater"
+import FilterPoint from "components/FilterPoint"
+import useFormatNumber from "hooks/useFormatNumber"
+import { URLS } from "api/Axios/data"
+import { AdminActionTypes } from "store/admin/types"
+import { ButtonBgColor } from "components/Button/types"
+import { IFilterPoints, IFilterState } from "components/FilterPoint/types"
 import { dataTableColgroup, dataHeads } from "./data"
 
 import "./styles.scss"
@@ -32,7 +31,10 @@ const AutoList: FC = () => {
   )
   const { loading } = useTypedSelector((state) => state.common)
   const [pageNumber, setPageNumber] = useState<number>(1)
-  const [category, setCategory] = useState<Nullable<IFilterState>>(null)
+  const [category, setCategory] = useState<IFilterState>({
+    id: "",
+    name: "Любая"
+  })
   const [filterPoints, setFilterPoints] = useState<IFilterPoints>({
     category: null
   })
@@ -41,7 +43,7 @@ const AutoList: FC = () => {
   const setCategoryState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любая") {
-        setCategory(null)
+        setCategory({ id: "", name: "Любая" })
       } else {
         categories?.data.map((elem) => {
           if (elem.name === name) {
@@ -57,7 +59,7 @@ const AutoList: FC = () => {
   )
 
   const activateFilterPoints = useCallback<EventFunc<MouseEvent>>(() => {
-    setFilterPoints({ category })
+    if (category.id) setFilterPoints({ category })
     setPageNumber(1)
   }, [category])
 
@@ -69,14 +71,14 @@ const AutoList: FC = () => {
   const loadCars = useCallback<VoidFunc<Nullable<string | number>>>(
     async (page, categoryid) => {
       dispatch(setLoading(true))
-      await dispatch(getCars(page, categoryid))
+      await dispatch(getEntities(URLS.CAR_URL, AdminActionTypes.GET_CARS, { page, categoryid }))
       dispatch(setLoading(false))
     },
     [dispatch]
   )
 
   useEffect(() => {
-    if (adminMenu === "Список авто") {
+    if (admin && adminMenu === "Список авто") {
       const currentCategoryId = filterPoints.category
         ? filterPoints.category.id
         : null
@@ -88,9 +90,15 @@ const AutoList: FC = () => {
 
   useEffect(() => {
     if (!categories && adminMenu === "Список авто") {
-      dispatch(getCategories())
+      dispatch(getEntities(URLS.CATEGORY_URL, AdminActionTypes.GET_CATEGORIES))
     }
   }, [adminMenu, categories, dispatch])
+
+  useEffect(() => {
+    if (!filterPoints.category) {
+      setCategory({ id: "", name: "Любая" })
+    }
+  }, [filterPoints.category])
 
   const select = useMemo<ReactNode>(() => {
     if (categories) {
@@ -100,22 +108,18 @@ const AutoList: FC = () => {
           key="auto_list_select"
           id="category"
           label="Категория"
+          value={category.name}
           data={["Любая", ...data]}
           callback={setCategoryState}
         />
       )
     }
     return false
-  }, [categories, setCategoryState])
+  }, [categories, category.name, setCategoryState])
 
-  const result = useMemo<ReactNode>(
-    () =>
-      !loading &&
-      cars && <div className="AutoList__result">Всего: {cars.count}</div>,
-    [loading, cars]
-  )
+  const result = cars ? cars.count : 0
 
-  const clearFilterButton = useMemo(
+  const clearFilterButton = useMemo<ReactNode>(
     () =>
       filterPoints.category && (
         <div className="Order__btn-clear-filter">
@@ -188,25 +192,27 @@ const AutoList: FC = () => {
       <div className="AutoList__header">
         <div className="AutoList__selects">
           {select}
-          {result}
+          <div className="AutoList__result">Всего: {result}
+            <div className="AutoList__filter-point">
+              <FilterPoint
+                key="auto_list_filter_point_category"
+                id="category"
+                name="Категория"
+                value={filterPoints.category && filterPoints.category.name}
+                setState={setFilterPoints}
+              />
+            </div>
+          </div>
         </div>
-        <div className="AutoList__buttons">
-          <FilterPoint
-            key="auto_list_filter_point_category"
-            id="category"
-            name="Категория"
-            value={filterPoints.category && filterPoints.category.name}
-            active={Boolean(filterPoints.category)}
-            setState={setFilterPoints}
-          />
 
+        <div className="AutoList__buttons">
           {clearFilterButton}
 
           <div className="AutoList__btn-set-filter">
             <Button
               name="Применить"
               bgColor={ButtonBgColor.BLUE}
-              disabled={!category}
+              disabled={!category.id}
               onClick={activateFilterPoints}
             />
           </div>

@@ -4,7 +4,6 @@ export interface IFilterPointProps {
   id: string
   name: string
   value: Nullable<string>
-  active?: boolean
   setState: Dispatch<SetStateAction<IFilterPoints>>
 }
 

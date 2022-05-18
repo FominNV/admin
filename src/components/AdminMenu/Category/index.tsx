@@ -1,7 +1,9 @@
+import { URLS } from "api/Axios/data"
 import Table from "components/Table"
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
-import { getCategories } from "store/admin/actions"
+import { getEntities } from "store/admin/actions"
+import { AdminActionTypes } from "store/admin/types"
 import { setLoading } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
 import { dataTableColgroup, dataHeads } from "./data"
@@ -15,7 +17,7 @@ const Category: FC = () => {
 
   const loadCategories = useCallback<VoidFunc<void>>(async () => {
     dispatch(setLoading(true))
-    await dispatch(getCategories())
+    await dispatch(getEntities(URLS.CATEGORY_URL, AdminActionTypes.GET_CATEGORIES))
     dispatch(setLoading(false))
   }, [dispatch])
 
