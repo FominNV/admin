@@ -69,9 +69,9 @@ const AutoList: FC = () => {
   }, [])
 
   const loadCars = useCallback<VoidFunc<Nullable<string | number>>>(
-    async (page, categoryid) => {
+    async (page, categoryId) => {
       dispatch(setLoading(true))
-      await dispatch(getEntities(URLS.CAR_URL, AdminActionTypes.GET_CARS, { page, categoryid }))
+      await dispatch(getEntities(URLS.CAR_URL, AdminActionTypes.GET_CARS, { page, categoryId }))
       dispatch(setLoading(false))
     },
     [dispatch]
@@ -150,7 +150,7 @@ const AutoList: FC = () => {
           <span className="AutoList__car-number">
             {elem.number
               ? elem.number.replace(/(\d+)/g, " $1 ").toLocaleUpperCase()
-              : "НЕ УСТАНОВЛЕН"}
+              : "НЕ УКАЗАН"}
           </span>
         )
         const price = `${useFormatNumber(elem.priceMax)}₽ - ${useFormatNumber(

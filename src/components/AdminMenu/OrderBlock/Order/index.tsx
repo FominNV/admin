@@ -100,13 +100,13 @@ const Order: FC = () => {
   )
 
   const loadOrders = useCallback<VoidFunc<Nullable<string | number>>>(
-    async (token, page, cityId, rateId, statusId) => {
+    async (token, page, cityId, rateId, orderStatusId) => {
       dispatch(setLoading(true))
       await dispatch(
         getEntities(
           URLS.ADMIN_ORDER_URL,
           AdminActionTypes.GET_ORDERS,
-          { page, cityId, rateId, statusId },
+          { page, cityId, rateId, orderStatusId },
           token as string
         )
       )
@@ -150,7 +150,7 @@ const Order: FC = () => {
   }, [admin, adminMenu, pageNumber, filterPoints, loadOrders])
 
   useEffect(() => {
-    if (!cities && admin) { dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_CATEGORIES)) }
+    if (!cities && admin) { dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_CITIES)) }
     if (!rates && admin) { dispatch(getEntities(URLS.RATE_URL, AdminActionTypes.GET_RATES)) }
     if (!statuses && admin) {
       dispatch(
