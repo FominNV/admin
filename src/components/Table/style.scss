@@ -2,17 +2,20 @@
 
 .Table {
   width: 100%;
+  height: 100%;
 
   &__table-h-wrap {
     width: 100%;
     height: 36px;
+    padding-right: 15px;
   }
 
   &__table-b-wrap {
     position: relative;
     @include flex(_, flex-start);
     width: 100%;
-    height: 501px;
+    height: calc(100% - 36px);
+    padding-right: 15px;
     overflow-y: auto;
   }
 
@@ -33,6 +36,10 @@
     letter-spacing: -0.38px;
     text-align: center;
     vertical-align: middle;
+
+    @media (max-width: $xm), (max-device-width: $xm) {
+      min-width: 120px;
+    }
   }
 
   &__tr {
@@ -64,6 +71,10 @@
     vertical-align: middle;
     text-transform: capitalize;
     animation: show-menu 0.3s 1 ease-in;
+
+    @media (max-width: $xm), (max-device-width: $xm) {
+      min-width: 120px;
+    }
   }
 
   &__loading {

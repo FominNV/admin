@@ -1,59 +1,119 @@
 @import 'styles/sass/main';
 
 .Order {
+  position: relative;
   @include scroll-bar-min;
   width: 100%;
+  height: 100%;
   background: $white;
   box-shadow: 0px 1px 0px rgba(90, 97, 105, 0.11),
     0px 2px 4px rgba(90, 97, 105, 0.12), 0px 5px 5px rgba(90, 97, 105, 0.06),
     0px 3.5px 35px rgba(90, 97, 105, 0.1);
   border-radius: 9px;
-  overflow-x: auto;
 
   &__header {
+    position: relative;
     @include flex(space-between, flex-end);
     width: 100%;
-    min-width: 900px;
+    height: 90px;
     padding: 15px 20px 22px;
     box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      @include flex(space-between);
+      min-height: 90px;
+      height: fit-content;
+    }
   }
 
   &__selects {
     @include flex(_, flex-end);
     column-gap: 15px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      @include flex(_, flex-start, column);
+      row-gap: 10px;
+      width: calc(50% - 10px);
+    }
   }
 
   &__result {
-    font: 400 18px/21px $helvetica-regular;
+    position: absolute;
+    left: 20px;
+    bottom: -11px;
+    height: 24px;
+    padding: 4px 8px;
+    background: $white;
+    font: 400 14px/14px $helvetica-regular;
     color: $black;
     letter-spacing: -0.5px;
+    border-radius: 6px;
+    border: 1px solid $gray-light;
+    z-index: 2;
+  }
+
+  &__filter-points {
+    position: absolute;
+    top: -1px;
+    @include flex;
+    column-gap: 15px;
+    left: calc(100% + 15px);
+    height: 24px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      display: none;
+    }
   }
 
   &__buttons {
-    @include flex;
+    @include flex(_, flex-end);
     column-gap: 15px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      @include flex(_, _, column-reverse);
+      row-gap: 10px;
+      width: calc(50% - 10px);
+    }
   }
 
   &__btn-clear-filter {
     width: 40px;
     height: 30px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      width: 100%;
+    }
   }
 
   &__btn-set-filter {
     width: 95px;
     height: 30px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      width: 100%;
+    }
   }
 
   &__content {
-    min-width: 950px;
-    height: 460px;
+    height: calc(100% - 160px);
     box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
     overflow-y: auto;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      padding-bottom: 40px;
+    }
   }
 
   &__paginater {
     @include flex(_, center);
     width: 100%;
     height: 60px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 40px;
+    }
   }
 }
