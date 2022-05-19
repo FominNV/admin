@@ -1,0 +1,33 @@
+@import 'styles/sass/main';
+
+.Banner {
+  display: none;
+  position: absolute;
+  top: 68px;
+  left: 0;
+  width: 100%;
+  height: 42px;
+  padding: 0 27px;
+  background: $green;
+  animation: show-menu 0.3s 1 ease-in;
+
+  &_active {
+    @include flex(space-between, center);
+    animation: show-menu 0.3s 1 ease-in;
+  }
+
+  &__text {
+    @include flex(_, center);
+    font: 400 13px/15px $helvetica-regular;
+    color: $white;
+    letter-spacing: -0.33px;
+  }
+
+  &__check-icon {
+    margin-right: 9px;
+  }
+
+  &__btn-close {
+    @include btn-reset;
+  }
+}

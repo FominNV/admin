@@ -1,0 +1,62 @@
+@import 'styles/sass/main';
+
+.Sidebar {
+  position: relative;
+  width: 285px;
+  align-self: stretch;
+  background: $white;
+  box-shadow: 0px 1px 75px rgba(90, 97, 105, 0.11),
+    0px 2px 4px rgba(90, 97, 105, 0.12), 0px 7.5px 11px rgba(90, 97, 105, 0.1),
+    0px 3.5px 17.5px rgba(165, 182, 201, 0.1);
+  z-index: 5;
+  transition: all 0.3s;
+
+  &__btn-show {
+    @include btn-reset;
+    display: none;
+    position: absolute;
+    top: calc(50% - 20px);
+    right: -30px;
+    width: 40px;
+    height: 40px;
+    background: $gray-light;
+    border: 1px solid $gray;
+    border-radius: 50%;
+
+    @media (max-width: $lg), (max-device-width: $lg) {
+      @include flex(center, center);
+    }
+  }
+
+  @media (max-width: $lg), (max-device-width: $lg) {
+    position: fixed;
+    top: 0;
+    left: -275px;
+    height: 100%;
+    border-right: 10px solid $gray;
+
+    &_active {
+      left: 0;
+      border-color: $gray-light;
+
+      .Sidebar__btn-show {
+        border-color: $gray-light;
+      }
+    }
+  }
+
+  &__header {
+    @include flex(_, center);
+    width: 100%;
+    height: 67.5px;
+    padding-left: 50px;
+    font: 400 16px/18px $helvetica-regular;
+    color: $blue-dark;
+    box-shadow: 0px 1px 0px #e1e5eb;
+  }
+
+  &__logo {
+    margin-right: 7px;
+    color: $green;
+  }
+}
