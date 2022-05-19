@@ -10,7 +10,7 @@
   &__content {
     width: 100%;
     height: calc(100vh - 136px);
-    min-height: 600px;
+    min-height: 450px;
     padding: 27px;
 
     @media (max-width: $md), (max-device-width: $md) {
@@ -24,7 +24,6 @@
 
   &__logo {
     width: 100%;
-    height: 80px;
     font: 400 29px/33px $helvetica-regular;
     color: $blue-dark;
     letter-spacing: -0.73px;
@@ -39,6 +38,7 @@
     display: none;
     width: 100%;
     height: calc(100% - 90px);
+    margin-top: 30px;
     overflow-y: auto;
     animation: show-menu 0.3s 1 ease-in;
 
