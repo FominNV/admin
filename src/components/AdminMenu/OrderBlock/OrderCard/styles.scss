@@ -1,0 +1,199 @@
+@import 'styles/sass/main';
+
+.OrderCard {
+  position: relative;
+  @include flex(_, center);
+  flex-wrap: wrap;
+  width: 100%;
+  height: 120px;
+  padding: 12px 22px;
+  column-gap: 16px;
+  border-bottom: 1px solid $gray-light;
+  overflow: hidden;
+
+  @media (max-width: $sm), (max-device-width: $sm) {
+    @include flex(_, flex-start);
+    height: 160px;
+  }
+
+  &__img-wrap {
+    @include flex(center, center);
+    width: 138px;
+    height: 68px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    @media (max-width: $xm), (max-device-width: $xm) {
+      display: none;
+    }
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__not-img {
+    font: 500 20px/24px $roboto-medium;
+    color: $gray;
+  }
+
+  &__info {
+    height: 100%;
+    width: 200px;
+    min-width: 200px;
+    @include flex(center, _, column);
+    row-gap: 6px;
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      max-width: 200px;
+      width: calc(80% - 10px);
+    }
+    @media (max-width: $sm), (max-device-width: $sm) {
+      height: fit-content;
+    }
+  }
+
+  &__text {
+    max-width: 200px;
+    font: 400 13px/15px $roboto-regular;
+    color: $blue-dark-gray;
+    letter-spacing: -0.41px;
+
+    &_dark {
+      color: $black;
+      text-transform: capitalize;
+    }
+
+    &_nowrap {
+      white-space: nowrap;
+    }
+  }
+
+  &__add-services {
+    @include flex(center, _, column);
+    row-gap: 6px;
+    height: 100%;
+    margin: 0 auto;
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      position: absolute;
+      top: 12px;
+      right: 30%;
+      width: 100px;
+      height: fit-content;
+    }
+    @media (max-width: $sm), (max-device-width: $sm) {
+      top: 50px;
+      right: 22px;
+      height: fit-content;
+    }
+    @media (max-width: $xs), (max-device-width: $xs) {
+      display: none;
+    }
+  }
+
+  &__add-service {
+    @include flex;
+    column-gap: 11px;
+    font: 400 10px/12px $roboto-regular;
+    color: $gray;
+    letter-spacing: -0.18px;
+
+    &_checked {
+      color: $black;
+
+      :first-child {
+        border-color: $green;
+
+        :first-child {
+          opacity: 1;
+        }
+      }
+    }
+
+    &__icon {
+      opacity: 0;
+    }
+
+    &__box {
+      @include flex(center, center);
+      width: 13px;
+      height: 13px;
+      border: 0.5px solid $gray-blue;
+      border-radius: 1px;
+    }
+  }
+
+  &__price {
+    width: 120px;
+    margin: 0 auto;
+    font: 400 24px/28px $helvetica-regular;
+    color: $black;
+    letter-spacing: -0.75px;
+    text-align: center;
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      position: absolute;
+      top: 12px;
+      right: 22px;
+    }
+    @media (max-width: $m), (max-device-width: $m) {
+      font-size: 16px;
+      line-height: 18px;
+      text-align: right;
+    }
+    @media (max-width: $xs), (max-device-width: $xs) {
+      right: 12px;
+    }
+  }
+
+  &__buttons {
+    @include flex;
+    width: 220px;
+    margin-left: auto;
+    border: 0.5px solid $gray-blue;
+    border-radius: 4px;
+    overflow: hidden;
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      position: absolute;
+      bottom: 12px;
+      right: 22px;
+    }
+    @media (max-width: $sm), (max-device-width: $sm) {
+      right: calc(50% - 110px);
+    }
+
+
+    :nth-child(2) {
+      border-left: 0.5px solid $gray-blue;
+      border-right: 0.5px solid $gray-blue;
+    }
+
+    :last-child {
+      column-gap: 0;
+    }
+
+    &__btn {
+      @include btn-reset;
+      @include flex(center, center);
+      column-gap: 5px;
+      width: 72px;
+      height: 24px;
+      font: 400 11px/13px $helvetica-regular;
+      color: $gray-dark;
+      letter-spacing: -0.35px;
+      transition: background 0.25s;
+
+      &:hover {
+        background: $gray-light;
+      }
+    }
+
+    &__icon {
+      @include flex(center, center);
+      width: 7px;
+      height: 7px;
+    }
+  }
+}

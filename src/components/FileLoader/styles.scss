@@ -1,0 +1,45 @@
+@import 'styles/sass/main';
+
+.FileLoader {
+  @include flex;
+  position: relative;
+  width: 232px;
+  height: 30px;
+  margin-top: 11px;
+  border: 0.5px solid $gray-blue;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__text {
+    @include flex(_, center);
+    width: calc(100% - 66px);
+    height: 100%;
+    padding-left: 13px;
+    font: 400 10px/12px $roboto-regular;
+    color: $black-gray;
+    letter-spacing: -0.18px;
+  }
+
+  &__input {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+  }
+
+  &__label {
+    @include flex(center, center);
+    width: 66px;
+    height: 100%;
+    background: $gray-light;
+    font: 400 10px/12px $roboto-regular;
+    color: $black-gray;
+    letter-spacing: -0.18px;
+    border-left: 0.5px solid $gray-blue;
+    cursor: pointer;
+    transition: background 0.25s;
+
+    &:hover {
+      background: $gray-low-light;
+    }
+  }
+}

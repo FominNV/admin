@@ -1,0 +1,26 @@
+@import 'styles/sass/main';
+
+.FilterPoint {
+  position: relative;
+  @include btn-reset;
+  display: none;
+  width: fit-content;
+  height: 100%;
+  padding: 4px 8px;
+  background: $white;
+  font: 400 14px/14px $helvetica-regular;
+  color: $black;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  border-radius: 6px;
+  border: 1px solid $gray-light;
+  transition: all 0.25s;
+
+  &:hover {
+    background: $gray-light;
+  }
+
+  &_active {
+    display: block;
+  }
+}
