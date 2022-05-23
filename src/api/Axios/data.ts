@@ -7,5 +7,6 @@ export enum URLS {
   CITY_URL = "db/city/",
   POINT_URL = "db/point/",
   RATE_URL = "db/rate/",
+  RATE_TYPE_URL = "db/rateType/",
   ORDER_STATUS_URL = "db/orderStatus/",
 }
