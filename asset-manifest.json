@@ -1,16 +1,18 @@
 {
   "files": {
-    "main.css": "/admin/static/css/main.f0912ce8.css",
-    "main.js": "/admin/static/js/main.f2ce7768.js",
+    "main.css": "/admin/static/css/main.34515195.css",
+    "main.js": "/admin/static/js/main.52d6fc11.js",
     "static/media/loading.gif": "/admin/static/media/loading.a6c466eeb7bddf5b0e69.gif",
     "static/media/Roboto-Medium.ttf": "/admin/static/media/Roboto-Medium.7429a63c09f79a1760b0.ttf",
     "static/media/Roboto-Regular.ttf": "/admin/static/media/Roboto-Regular.a8d6ac03c7b96b7acb62.ttf",
     "static/media/Poppins-SemiBold.ttf": "/admin/static/media/Poppins-SemiBold.ac8d04b620e54be9b0f0.ttf",
     "static/media/Helvetica-Regular.ttf": "/admin/static/media/Helvetica-Regular.31a272d75aa97b0dcb55.ttf",
     "static/media/HelveticaBold.ttf": "/admin/static/media/HelveticaBold.d2d4622394c0e88a8c69.ttf",
-    "static/media/sadness.svg": "/admin/static/media/sadness.0d50a0f08abf042bb497831ae123ee59.svg",
+    "static/media/delete.svg": "/admin/static/media/delete.39431ae235897e4a3027102584040643.svg",
+    "static/media/sadness.svg": "/admin/static/media/sadness.ffc0ec80c35ada7d880f000008e73ac1.svg",
     "static/media/back.svg": "/admin/static/media/back.4e6024868e7a5a083429862f9d71ab4a.svg",
     "static/media/hide.svg": "/admin/static/media/hide.495d6f10a3d4cd833b6989cc138c5976.svg",
+    "static/media/clear.svg": "/admin/static/media/clear.a367ce8a6253961fd2f1a059ce9e79af.svg",
     "static/media/search.svg": "/admin/static/media/search.c8b5b3af1de2fdaa3efe9097b9e1caf7.svg",
     "static/media/logo.svg": "/admin/static/media/logo.248f75258cc569a0169436a257b3af13.svg",
     "static/media/change.svg": "/admin/static/media/change.4ffdacddfadc0dfa7761e9538c0f0d77.svg",
@@ -28,11 +30,11 @@
     "static/media/drop.svg": "/admin/static/media/drop.e0fff2df22f7971befd42a9dec4ee111.svg",
     "static/media/show.svg": "/admin/static/media/show.e7e9384c8bb5bfc0062642bacaa9c904.svg",
     "static/media/dropdown.svg": "/admin/static/media/dropdown.e709e3e8126acd27b6f4998529bcde32.svg",
-    "main.f0912ce8.css.map": "/admin/static/css/main.f0912ce8.css.map",
-    "main.f2ce7768.js.map": "/admin/static/js/main.f2ce7768.js.map"
+    "main.34515195.css.map": "/admin/static/css/main.34515195.css.map",
+    "main.52d6fc11.js.map": "/admin/static/js/main.52d6fc11.js.map"
   },
   "entrypoints": [
-    "static/css/main.f0912ce8.css",
-    "static/js/main.f2ce7768.js"
+    "static/css/main.34515195.css",
+    "static/js/main.52d6fc11.js"
   ]
 }
