@@ -6,25 +6,24 @@ import { IBannerProps } from "./types"
 
 import "./styles.scss"
 
-const Banner: FC<IBannerProps> = ({ active, setState }) => {
-  const closeBanner = useCallback<EventFunc<MouseEvent>>(() => {
-    setState(false)
-  }, [setState])
+const Banner: FC<IBannerProps> = ({ text, closeBanner }) => {
+  const onClickHandler = useCallback<EventFunc<MouseEvent>>(() => {
+    closeBanner()
+  }, [closeBanner])
 
   const bannerClassName = classNames("Banner", {
-    Banner_active: active
+    Banner_active: text
   })
 
   return (
     <div className={bannerClassName}>
       <div className="Banner__text">
-        <Check className="Banner__check-icon" />
-        Успех! Машина сохранена
+        <Check className="Banner__check-icon" />{text}
       </div>
 
       <button
         className="Banner__btn-close"
-        onClick={closeBanner}
+        onClick={onClickHandler}
       >
         <Close />
       </button>
