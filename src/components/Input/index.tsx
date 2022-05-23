@@ -20,18 +20,19 @@ const Input: FC<IInputProps> = ({
   id,
   label,
   type,
+  value,
+  maxLength,
   placeholder,
   defaultValue,
   error,
+  readOnly,
   setState
 }) => {
-  const [innerValue, setInnerValue] = useState<string>("")
   const [innerType, setInnerType] = useState<string>("password")
   const input = useRef<HTMLInputElement | null>(null)
 
   const onChangeHandler = useCallback<EventFunc<ChangeEvent<HTMLInputElement>>>(
     (e) => {
-      setInnerValue(e.currentTarget.value)
       setState(e.currentTarget.value)
     },
     [setState]
@@ -40,7 +41,6 @@ const Input: FC<IInputProps> = ({
   const clearInputValue = useCallback<EventFunc<MouseEvent>>(
     (e) => {
       e.preventDefault()
-      setInnerValue("")
       setState("")
       input.current?.focus()
     },
@@ -58,7 +58,6 @@ const Input: FC<IInputProps> = ({
 
   useEffect(() => {
     if (defaultValue) {
-      setInnerValue(defaultValue)
       setState(defaultValue)
     }
   }, [])
@@ -67,13 +66,13 @@ const Input: FC<IInputProps> = ({
     Input__input_error: error
   })
   const clearButtonClassName = classNames("Input__btn", {
-    Input__btn_active: innerValue
+    Input__btn_active: value && !readOnly
   })
   const errorClassName = classNames("Input__error", {
     Input__error_active: error
   })
   const watchPassword = classNames("Input__watch-password", {
-    "Input__watch-password_active": type === "password" && innerValue
+    "Input__watch-password_active": type === "password" && value
   })
 
   const showButtonIcon = useMemo(
@@ -106,11 +105,13 @@ const Input: FC<IInputProps> = ({
           id={id}
           type={currentType}
           className={inputClassName}
-          value={innerValue}
+          value={value}
           name={label}
           ref={input}
+          maxLength={maxLength}
           placeholder={placeholder}
           onChange={onChangeHandler}
+          readOnly={readOnly}
           autoComplete="on"
         />
 
