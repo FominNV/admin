@@ -6,7 +6,7 @@ export const dataTableColgroup: string[] = [
 ]
 
 export const dataHeads = [
+  "Наименование пункта",
   "Город",
-  "Адрес",
-  "Название пункта"
+  "Адрес"
 ]
