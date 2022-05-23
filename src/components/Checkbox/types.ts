@@ -5,5 +5,5 @@ export interface ICheckboxProps {
   label: string
   checked: boolean
   disabled?: boolean
-  setState: Dispatch<SetStateAction<boolean>>
+  setState: Dispatch<SetStateAction<string[]>>
 }
