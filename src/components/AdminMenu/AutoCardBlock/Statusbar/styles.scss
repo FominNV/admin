@@ -1,7 +1,6 @@
 @import 'styles/sass/main';
 
 .Statusbar {
-  // width: 335px;
   flex: 1 1 335px;
   background: $white;
   box-shadow: 0px 2px 4px rgba(90, 97, 105, 0.12);
@@ -18,8 +17,35 @@
     padding: 34px 0 22px;
   }
 
-  &__img {
+  &__img-wrap {
+    @include flex(center, center);
     width: 244px;
+    height: 110px;
+    overflow: hidden;
+    border: 1px solid transparent;
+
+    &_error {
+      border-color: $red;
+
+    }
+  }
+
+  &__img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  &__img-text {
+    font: 400 20px/24px $helvetica-regular;
+    color: $blue-dark;
+    letter-spacing: -0.61px;
+  }
+
+  &__image-error {
+    font: 400 20px/24px $helvetica-regular;
+    color: $red;
+    letter-spacing: -0.61px;
+    text-align: center;
   }
 
   &__model {
@@ -44,8 +70,15 @@
   }
 
   &__description {
+    position: relative;
     width: 100%;
     padding: 22px 27px 40px 22px;
+    border: 1px solid transparent;
+
+    &_error {
+      border-color: $red;
+
+    }
 
     &__title {
       font: 500 13px/15px $roboto-medium;
@@ -63,11 +96,19 @@
       color: $gray-dark;
       letter-spacing: -0.41px;
       box-sizing: border-box;
-      overflow: hidden;
 
       &:focus {
         border-bottom: 1px solid $gray-low-light;
       }
+    }
+
+    &__error {
+      position: absolute;
+      bottom: 15px;
+      left: 22px;
+      font: 400 14px/20px $roboto-regular;
+      color: $red;
+      letter-spacing: -0.41px;
     }
   }
 }

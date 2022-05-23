@@ -3,7 +3,8 @@
 .Config {
   position: relative;
   width: calc(100% - 362px);
-  height: 100%;
+  align-self: stretch;
+  min-height: calc(100vh - 256px);
   padding: 20px 18px 18px 18px;
   background: $white;
   box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
@@ -16,41 +17,135 @@
   }
 
   &__header {
+    @include flex(space-between, center);
+    width: 100%;
     font: 500 18px/21px $roboto-medium;
     color: $blue-dark;
     letter-spacing: -0.44px;
   }
 
-  &__content {
+  &__btn-clear {
+    @include btn-reset;
+    @include flex(center, center);
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    border-bottom: 0.5px solid transparent;
+    transition: all 0.25s;
+
+    &:hover {
+      border-color: $black;
+    }
+
+    &:active {
+      border-color: transparent;
+      transform: scale(0.9);
+    }
+  }
+
+  &__content-wrap {
     width: 100%;
-    height: calc(100% - 93px);
+    min-height: calc(100% - 93px);
     margin-top: 42px;
   }
 
-  &__inputs {
-    @include flex(_, flex-end);
-    width: 100%;
+  &__content {
+    @include flex(flex-start, flex-start);
     flex-wrap: wrap;
     column-gap: 20px;
+    row-gap: 26px;
+    width: 100%;
 
-    &__item {
-      width: calc(50% - 10px);
-
-      @media (max-width: $mx), (max-device-width: $mx) {
-        width: 100%;
-      }
-      @media (max-width: $md), (max-device-width: $md) {
-        margin-top: -16px;
-      }
-
-      &_color {
-        width: calc(50% - 48px);
-
-        @media (max-width: $mx), (max-device-width: $mx) {
-          width: calc(100% - 38px);
-        }
-      }
+    @media (max-width: $xl), (max-device-width: $xl) {
+      width: 100%;
+      row-gap: 36px;
     }
+    @media (max-width: $md), (max-device-width: $md) {
+      row-gap: 30px;
+    }
+  }
+
+  &__content__item {
+    width: calc(50% - 10px);
+
+    @media (max-width: $xl), (max-device-width: $xl) {
+      width: 100%;
+    }
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      width: 100%;
+    }
+  }
+
+  &__input-wrap,
+  &__form {
+    position: relative;
+    @include flex(_, flex-end);
+    column-gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+    border: 1px solid transparent;
+
+    &_error {
+      border-color: $red;
+    }
+  }
+
+  &__input-number {
+    width: calc(100% - 120px);
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      width: 100%;
+      margin-top: 16px;
+    }
+  }
+
+  &__car-number {
+    width: fit-content;
+    height: 30px;
+    margin-left: auto;
+    padding: 8px;
+    font: 400 14px/16px $roboto-regular;
+    color: $black;
+    text-transform: uppercase;
+    border: 1px solid $gray;
+    border-radius: 4px;
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      margin-top: 32px;
+      margin-left: 0;
+    }
+  }
+
+  &__input-price {
+    width: calc(50% - 4px);
+
+    @media (max-width: $mx), (max-device-width: $mx) {
+      width: 100%;
+      margin-top: 16px;
+    }
+    @media (max-width: $md), (max-device-width: $md) {
+      height: 40px;
+    }
+  }
+
+  &__price-error {
+    position: absolute;
+    display: none;
+    bottom: -30px;
+    left: 0;
+    width: 100%;
+    font: 400 14px/16px $roboto-regular;
+    color: $red;
+    text-align: center;
+
+    &_active {
+      display: block;
+    }
+  }
+
+  &__input-color {
+    width: calc(100% - 38px);
   }
 
   &__add-color {
@@ -58,15 +153,9 @@
     position: relative;
     width: 30px;
     height: 30px;
-    margin-bottom: 16px;
-    margin-left: -12px;
     border: 1px solid $gray-blue;
     border-radius: 4px;
     transition: all 0.25s;
-
-    @media (max-width: $md), (max-device-width: $md) {
-      margin-bottom: 32px;
-    }
 
     &__icon {
       position: absolute;
@@ -105,8 +194,27 @@
   }
 
   &__checkboxes {
-    @media (max-width: $md), (max-device-width: $md) {
-      margin-top: -16px;
+    position: relative;
+    margin: 18px 0 26px;
+    padding: 1px 0 8px;
+    border: 1px solid transparent;
+
+    &_error {
+      border-color: $red;
+    }
+
+    &__error {
+      position: absolute;
+      bottom: -16px;
+      left: 16px;
+      display: none;
+      font: 400 10px/11px $helvetica-regular;
+      color: $red;
+      letter-spacing: -0.18px;
+
+      &_active {
+        display: block;
+      }
     }
   }
 
@@ -115,10 +223,6 @@
     position: relative;
     width: calc(100% + 12px);
     height: 30px;
-
-    @media (max-width: $m), (max-device-width: $m) {
-      margin-top: 12px;
-    }
   }
 
   &__btn {
