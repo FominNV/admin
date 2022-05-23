@@ -1,0 +1,49 @@
+@import 'styles/sass/main';
+
+.ConfigButtons {
+  @include flex;
+  margin: 0 auto;
+  border: 0.5px solid $gray-blue;
+  border-radius: 4px;
+  overflow: hidden;
+
+  :nth-child(2) {
+    border-left: 0.5px solid $gray-blue;
+    border-right: 0.5px solid $gray-blue;
+  }
+
+  &__btn {
+    @include btn-reset;
+    @include flex(center, center);
+    column-gap: 5px;
+    width: 72px;
+    height: 24px;
+    font: 400 11px/13px $helvetica-regular;
+    color: $gray-dark;
+    letter-spacing: -0.35px;
+    transition: background 0.25s;
+
+    &_delete {
+      color: $red;
+    }
+
+    &:hover {
+      background: $gray-light;
+    }
+
+    &:disabled {
+      color: $gray-low-light;
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  &__icon {
+    @include flex(center, center);
+    width: 7px;
+    height: 7px;
+  }
+}
