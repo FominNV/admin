@@ -2,8 +2,9 @@ import { CommonAction, CommonActionTypes, ICommonState } from "./types"
 
 const initialState: ICommonState = {
   loading: false,
-  pageTitle: "Admin"
-
+  pageTitle: "Admin",
+  bannerText: null,
+  configPopup: null
 }
 
 export function commonReducer(
@@ -21,6 +22,18 @@ export function commonReducer(
       return {
         ...state,
         pageTitle: action.payload.pageTitle
+      }
+
+    case CommonActionTypes.SET_BANNER_TEXT:
+      return {
+        ...state,
+        bannerText: action.payload.bannerText
+      }
+
+    case CommonActionTypes.SET_CONFIG_POPUP:
+      return {
+        ...state,
+        configPopup: action.payload.configPopup
       }
 
     default:
