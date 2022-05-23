@@ -1,36 +1,53 @@
-import { FC, ReactNode, useEffect, useMemo, useState } from "react"
+import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
-import { PATHS } from "routes/consts"
-import { setPageTitle } from "store/common/actions"
 import { useTypedSelector } from "store/selectors"
-import AdminLayout from "layouts/AdminLayout"
+import { setBannerText, setConfigPopup, setLoading, setPageTitle } from "store/common/actions"
+import { setAdminToken, setConfigCar } from "store/admin/actions"
+import { PATHS } from "routes/consts"
+import ConfigPopup from "components/ConfigPopup"
 import Header from "components/Header"
 import Banner from "components/Banner"
 import Footer from "components/Footer"
+import AdminLayout from "layouts/AdminLayout"
+import Error from "components/AdminMenu/Error"
 import classNames from "classnames"
 import dataMenu from "./data"
 
 import "./styles.scss"
 
 const Admin: FC = () => {
-  const { admin, adminMenu } = useTypedSelector((state) => state.admin)
-  const [showBanner, setShowBanner] = useState<boolean>(false)
+  const { adminToken, adminMenu, error } = useTypedSelector((state) => state.admin)
+  const { bannerText } = useTypedSelector((state) => state.common)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (!admin) {
-      navigate(PATHS.ADMIN_LOGIN)
-    }
-  }, [admin, navigate])
+  const closeBanner = useCallback<VoidFunc<void>>(() => {
+    dispatch(setBannerText(null))
+  }, [dispatch])
 
   useEffect(() => {
     if (location.pathname === PATHS.ADMIN_CONFIG) {
       dispatch(setPageTitle("Admin / Настройки"))
     }
   }, [location, dispatch])
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setLoading(false))
+      dispatch(setConfigCar(null))
+      dispatch(setConfigPopup(null))
+    }
+  }, [error, dispatch])
+
+  useEffect(() => {
+    if (!adminToken && sessionStorage.getItem("adminToken")) {
+      dispatch(setAdminToken(sessionStorage.getItem("adminToken")))
+    } else if (!adminToken && !sessionStorage.getItem("adminToken")) {
+      navigate(PATHS.ADMIN_LOGIN)
+    }
+  }, [adminToken, dispatch, navigate])
 
   const menu = useMemo<ReactNode>(
     () =>
@@ -51,18 +68,29 @@ const Admin: FC = () => {
     [adminMenu]
   )
 
-  return (
-    <AdminLayout>
-      <div className="Admin">
-        <Header />
-        <div className="Admin__content">
+  const errorMenu = useMemo<ReactNode>(() => error && <Error />, [error])
+
+  const content = useMemo<ReactNode>(
+    () =>
+      errorMenu || (
+        <>
           <Banner
-            active={showBanner}
-            setState={setShowBanner}
+            text={bannerText}
+            closeBanner={closeBanner}
           />
           <div className="Admin__logo">{adminMenu}</div>
           {menu}
-        </div>
+        </>
+      ),
+    [errorMenu, bannerText, adminMenu, menu, closeBanner]
+  )
+
+  return (
+    <AdminLayout>
+      <ConfigPopup />
+      <div className="Admin">
+        <Header />
+        <div className="Admin__content">{content}</div>
         <Footer />
       </div>
     </AdminLayout>

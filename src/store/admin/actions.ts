@@ -6,9 +6,13 @@ import {
   AdminActionTypes,
   AdminDispatch,
   AdminFetch,
-  EntityFetch,
+  CreateEntityType,
+  DeleteEntityType,
+  GetEntitiesType,
   IAdmin,
-  IResponse
+  ICar,
+  IResponse,
+  UpdateEntityType
 } from "./types"
 
 export const loginAdmin: AdminFetch = (data) => async (dispatch) => {
@@ -32,13 +36,13 @@ export const loginAdmin: AdminFetch = (data) => async (dispatch) => {
     .then((response) => {
       dispatch({
         type: AdminActionTypes.LOGIN,
-        payload: { admin: response?.data as IAdmin, error: false }
+        payload: { admin: response?.data as IAdmin, error: null }
       })
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch({
         type: AdminActionTypes.LOGIN,
-        payload: { admin: null, error: true }
+        payload: { admin: null, error: { code: err.code, status: err.request.status } }
       })
     })
 }
@@ -50,6 +54,20 @@ export const logoutAdmin: AdminDispatch<void> = () => {
   }
 }
 
+export const setAdminToken: AdminDispatch<Nullable<string>> = (adminToken) => {
+  return {
+    type: AdminActionTypes.SET_ADMIN_TOKEN,
+    payload: { adminToken }
+  }
+}
+
+export const setError: AdminDispatch<null> = (error) => {
+  return {
+    type: AdminActionTypes.SET_ERROR,
+    payload: { error }
+  }
+}
+
 export const setAdminMenu: AdminDispatch<string> = (adminMenu) => {
   return {
     type: AdminActionTypes.SET_ADMIN_MENU,
@@ -57,31 +75,117 @@ export const setAdminMenu: AdminDispatch<string> = (adminMenu) => {
   }
 }
 
-export const getEntities: EntityFetch = (url, type, params, token) => async (
+export const getEntities: GetEntitiesType = (url, type, params, token) => async (
   dispatch
 ) => {
   await Axios.get<IResponse, IResponse>(url, {
     headers: {
       Authorization: `Bearer ${token}`
     },
-    params: {
-      limit: 20,
-      ...params
-    }
+    params
   })
     .then((response) => {
       dispatch({
         type,
         payload: {
           entities: response,
-          error: false
+          error: null
         }
       })
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch({
         type,
-        payload: { entities: null, error: true }
+        payload: { entities: null, error: { code: err.code, status: err.request.status } }
       })
     })
+}
+
+export const createEntity: CreateEntityType = (url, type, body, token) => async (
+  dispatch
+) => {
+  await Axios.post<IResponse, IResponse>(url, body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      dispatch({
+        type,
+        payload: {
+          updatedEntity: response,
+          error: null
+        }
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type,
+        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+      })
+    })
+}
+
+export const updateEntity: UpdateEntityType = (url, type, body, id, token) => async (
+  dispatch
+) => {
+  await Axios.put<IResponse, IResponse>(url + id, body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      dispatch({
+        type,
+        payload: {
+          updatedEntity: response,
+          error: null
+        }
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type,
+        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+      })
+    })
+}
+
+export const deleteEntity: DeleteEntityType = (url, type, id, token) => async (
+  dispatch
+) => {
+  await Axios.delete<IResponse, IResponse>(url + id, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((response) => {
+      dispatch({
+        type,
+        payload: {
+          updatedEntity: response,
+          error: null
+        }
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type,
+        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+      })
+    })
+}
+
+export const setConfigCar: AdminDispatch<Nullable<ICar>> = (configCar) => {
+  return {
+    type: AdminActionTypes.SET_CONFIG_CAR,
+    payload: { configCar }
+  }
+}
+
+export const setAutoCardUpdateMode: AdminDispatch<boolean> = (autoCardUpdateMode) => {
+  return {
+    type: AdminActionTypes.SET_AUTO_CARD_UPDATE_MODE,
+    payload: { autoCardUpdateMode }
+  }
 }
