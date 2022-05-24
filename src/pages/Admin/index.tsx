@@ -19,6 +19,7 @@ import "./styles.scss"
 const Admin: FC = () => {
   const { adminToken, adminMenu, error } = useTypedSelector((state) => state.admin)
   const { bannerText } = useTypedSelector((state) => state.common)
+  const [timer, setTimer] = useState<Nullable<ReturnType<typeof setTimeout>>>(null)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -48,6 +49,16 @@ const Admin: FC = () => {
       navigate(PATHS.ADMIN_LOGIN)
     }
   }, [adminToken, dispatch, navigate])
+
+  useEffect(() => {
+    if (bannerText) {
+      if (timer) clearTimeout(timer)
+      const currentTimer = setTimeout(() => {
+        dispatch(setBannerText(null))
+      }, 5000)
+      setTimer(currentTimer)
+    }
+  }, [bannerText])
 
   const menu = useMemo<ReactNode>(
     () =>
