@@ -78,8 +78,10 @@ const Form: FC = () => {
   }, [password, passwordError, fieldWatcher])
 
   useEffect(() => {
-    if (error) {
+    if (error && error.status === 401) {
       setFormError("Почта или пароль введены неверно")
+    } else if (error && error.status !== 401) {
+      setFormError(error.code)
     }
   }, [error])
 

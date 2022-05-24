@@ -42,9 +42,8 @@ export const loginAdmin: AdminFetch = (data) => async (dispatch) => {
     })
     .catch((err) => {
       dispatch({
-        type: AdminActionTypes.LOGIN,
+        type: AdminActionTypes.SET_ERROR,
         payload: {
-          admin: null,
           error: { code: err.code, status: err.request.status }
         }
       })

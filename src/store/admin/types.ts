@@ -66,7 +66,7 @@ export interface IAdmin {
 
 export interface IError {
   code: string
-  status: string
+  status: number
 }
 
 export interface IPostOrder {
