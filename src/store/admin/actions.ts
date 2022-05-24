@@ -11,6 +11,7 @@ import {
   GetEntitiesType,
   IAdmin,
   ICar,
+  IError,
   IResponse,
   UpdateEntityType
 } from "./types"
@@ -42,7 +43,10 @@ export const loginAdmin: AdminFetch = (data) => async (dispatch) => {
     .catch((err) => {
       dispatch({
         type: AdminActionTypes.LOGIN,
-        payload: { admin: null, error: { code: err.code, status: err.request.status } }
+        payload: {
+          admin: null,
+          error: { code: err.code, status: err.request.status }
+        }
       })
     })
 }
@@ -61,7 +65,7 @@ export const setAdminToken: AdminDispatch<Nullable<string>> = (adminToken) => {
   }
 }
 
-export const setError: AdminDispatch<null> = (error) => {
+export const setError: AdminDispatch<Nullable<IError>> = (error) => {
   return {
     type: AdminActionTypes.SET_ERROR,
     payload: { error }
@@ -75,9 +79,12 @@ export const setAdminMenu: AdminDispatch<string> = (adminMenu) => {
   }
 }
 
-export const getEntities: GetEntitiesType = (url, type, params, token) => async (
-  dispatch
-) => {
+export const getEntities: GetEntitiesType = (
+  url,
+  type,
+  params,
+  token
+) => async (dispatch) => {
   await Axios.get<IResponse, IResponse>(url, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -95,15 +102,21 @@ export const getEntities: GetEntitiesType = (url, type, params, token) => async 
     })
     .catch((err) => {
       dispatch({
-        type,
-        payload: { entities: null, error: { code: err.code, status: err.request.status } }
+        type: AdminActionTypes.SET_ERROR,
+        payload: {
+          entities: null,
+          error: { code: err.code, status: err.request.status }
+        }
       })
     })
 }
 
-export const createEntity: CreateEntityType = (url, type, body, token) => async (
-  dispatch
-) => {
+export const createEntity: CreateEntityType = (
+  url,
+  type,
+  body,
+  token
+) => async (dispatch) => {
   await Axios.post<IResponse, IResponse>(url, body, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -120,15 +133,22 @@ export const createEntity: CreateEntityType = (url, type, body, token) => async 
     })
     .catch((err) => {
       dispatch({
-        type,
-        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+        type: AdminActionTypes.SET_ERROR,
+        payload: {
+          updatedEntity: null,
+          error: { code: err.code, status: err.request.status }
+        }
       })
     })
 }
 
-export const updateEntity: UpdateEntityType = (url, type, body, id, token) => async (
-  dispatch
-) => {
+export const updateEntity: UpdateEntityType = (
+  url,
+  type,
+  body,
+  id,
+  token
+) => async (dispatch) => {
   await Axios.put<IResponse, IResponse>(url + id, body, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -145,8 +165,11 @@ export const updateEntity: UpdateEntityType = (url, type, body, id, token) => as
     })
     .catch((err) => {
       dispatch({
-        type,
-        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+        type: AdminActionTypes.SET_ERROR,
+        payload: {
+          updatedEntity: null,
+          error: { code: err.code, status: err.request.status }
+        }
       })
     })
 }
@@ -170,8 +193,11 @@ export const deleteEntity: DeleteEntityType = (url, type, id, token) => async (
     })
     .catch((err) => {
       dispatch({
-        type,
-        payload: { updatedEntity: null, error: { code: err.code, status: err.request.status } }
+        type: AdminActionTypes.SET_ERROR,
+        payload: {
+          updatedEntity: null,
+          error: { code: err.code, status: err.request.status }
+        }
       })
     })
 }
@@ -183,7 +209,9 @@ export const setConfigCar: AdminDispatch<Nullable<ICar>> = (configCar) => {
   }
 }
 
-export const setAutoCardUpdateMode: AdminDispatch<boolean> = (autoCardUpdateMode) => {
+export const setAutoCardUpdateMode: AdminDispatch<boolean> = (
+  autoCardUpdateMode
+) => {
   return {
     type: AdminActionTypes.SET_AUTO_CARD_UPDATE_MODE,
     payload: { autoCardUpdateMode }
