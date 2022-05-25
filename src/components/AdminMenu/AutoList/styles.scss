@@ -2,9 +2,9 @@
 
 .AutoList {
   position: relative;
-  @include scroll-bar-min;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 250px);
+  min-height: 460px;
   background: $white;
   box-shadow: 0px 1px 0px rgba(90, 97, 105, 0.11),
     0px 2px 4px rgba(90, 97, 105, 0.12), 0px 5px 5px rgba(90, 97, 105, 0.06),
@@ -113,6 +113,8 @@
   &__table {
     height: calc(100% - 160px);
     padding: 0 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   &__paginater {

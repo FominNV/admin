@@ -5,40 +5,46 @@ import City from "components/AdminMenu/City"
 import Order from "components/AdminMenu/OrderBlock/Order"
 import Point from "components/AdminMenu/Point"
 import Rate from "components/AdminMenu/Rate"
+import RateType from "components/AdminMenu/RateType"
 import Status from "components/AdminMenu/Status"
+import { AdminMenu } from "store/admin/types"
 import { IAdminMenu } from "./types"
 
 const dataMenu: IAdminMenu[] = [
   {
-    id: "Карточка автомобиля",
+    id: AdminMenu.AUTO_CARD,
     menu: <AutoCard />
   },
   {
-    id: "Заказы",
+    id: AdminMenu.ORDER,
     menu: <Order />
   },
   {
-    id: "Список авто",
+    id: AdminMenu.AUTO_LIST,
     menu: <AutoList />
   },
   {
-    id: "Категории Авто",
+    id: AdminMenu.CATEGORY,
     menu: <Category />
   },
   {
-    id: "Города",
+    id: AdminMenu.CITY,
     menu: <City />
   },
   {
-    id: "Адреса",
+    id: AdminMenu.POINT,
     menu: <Point />
   },
   {
-    id: "Тарифы",
+    id: AdminMenu.RATE,
     menu: <Rate />
   },
   {
-    id: "Статусы заказов",
+    id: AdminMenu.RATE_TYPE,
+    menu: <RateType />
+  },
+  {
+    id: AdminMenu.STATUS,
     menu: <Status />
   }
 ]

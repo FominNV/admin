@@ -23,6 +23,17 @@
     margin-top: 36px;
   }
 
+  &__input {
+    margin-bottom: 16px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      margin-bottom: 24px;
+    }
+    @media (max-width: $sm), (max-device-width: $sm) {
+      margin-bottom: 32px;
+    }
+  }
+
   &__error {
     position: absolute;
     top: -20px;

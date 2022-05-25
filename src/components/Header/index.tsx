@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux"
 import { ReactComponent as Search } from "assets/icons/Header/search.svg"
 import { ReactComponent as Notification } from "assets/icons/Header/notification.svg"
 import { ReactComponent as Dropdown } from "assets/icons/Header/dropdown.svg"
+import { logoutAdmin, setAdminToken } from "store/admin/actions"
 import { ButtonBgColor } from "components/Button/types"
+import classNames from "classnames"
+import Button from "components/Button"
 import avatar from "assets/images/Header/avatar.jpg"
 
 import "./styles.scss"
-import classNames from "classnames"
-import Button from "components/Button"
-import { logoutAdmin } from "store/admin/actions"
 
 const Header: FC = () => {
   const [showLogout, setShowLogout] = useState<boolean>(false)
@@ -20,6 +20,8 @@ const Header: FC = () => {
   }, [showLogout])
 
   const logoutUser = useCallback<EventFunc<MouseEvent>>(() => {
+    sessionStorage.removeItem("adminToken")
+    dispatch(setAdminToken(null))
     dispatch(logoutAdmin())
   }, [dispatch])
 

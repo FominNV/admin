@@ -4,7 +4,6 @@ import {
   MouseEvent,
   ReactNode,
   useCallback,
-  useEffect,
   useMemo,
   useState
 } from "react"
@@ -14,7 +13,7 @@ import { ISelectProps } from "./types"
 
 import "./styles.scss"
 
-const Select: FC<ISelectProps> = ({ id, label, data, value, callback }) => {
+const Select: FC<ISelectProps> = ({ id, label, data, value, error, callback }) => {
   const [showDataBlock, setShowDataBlock] = useState<boolean>(false)
 
   const onClickHandler = useCallback<
@@ -55,6 +54,12 @@ const Select: FC<ISelectProps> = ({ id, label, data, value, callback }) => {
     [data, id, onClickHandler, onMouseDownHandler]
   )
 
+  const selectClassName = classNames("Select__select", {
+    Select__select_error: error
+  })
+  const errorClassName = classNames("Select__error", {
+    Select__error_active: error
+  })
   const dataBlockClassName = classNames("Select__data-block", {
     "Select__data-block_active": showDataBlock
   })
@@ -72,7 +77,7 @@ const Select: FC<ISelectProps> = ({ id, label, data, value, callback }) => {
         <input
           id={id}
           type="text"
-          className="Select__select"
+          className={selectClassName}
           value={value}
           name={label}
           onBlur={onBlurHandler}
@@ -90,6 +95,7 @@ const Select: FC<ISelectProps> = ({ id, label, data, value, callback }) => {
         </div>
 
         <div className={dataBlockClassName}>{dataList}</div>
+        <div className={errorClassName}>{error}</div>
       </div>
     </div>
   )

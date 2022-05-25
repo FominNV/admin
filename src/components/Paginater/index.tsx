@@ -68,10 +68,10 @@ const Paginater: FC<IPaginaterProps> = ({
     Paginater__btn_show: pageCount - currentNumber > 1
   })
   const dotsStartClassName = classNames("Paginater__dots", {
-    Paginater__dots_show: currentNumber > 2
+    Paginater__dots_show: currentNumber > 3
   })
   const dotsEndClassName = classNames("Paginater__dots", {
-    Paginater__dots_show: pageCount - currentNumber > 1
+    Paginater__dots_show: pageCount - currentNumber > 2
   })
 
   return (
