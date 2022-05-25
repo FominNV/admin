@@ -3,5 +3,6 @@ export interface ISelectProps {
   label: string
   value: string
   data: Nullable<string[]>
+  error?: Nullable<string>
   callback: VoidFunc<string>
 }

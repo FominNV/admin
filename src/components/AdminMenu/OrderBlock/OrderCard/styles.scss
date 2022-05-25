@@ -2,18 +2,53 @@
 
 .OrderCard {
   position: relative;
-  @include flex(_, center);
-  flex-wrap: wrap;
   width: 100%;
   height: 120px;
-  padding: 12px 22px;
-  column-gap: 16px;
   border-bottom: 1px solid $gray-light;
-  overflow: hidden;
+  transition: background 0.2s;
 
   @media (max-width: $sm), (max-device-width: $sm) {
-    @include flex(_, flex-start);
     height: 160px;
+  }
+
+  &__wrap {
+    width: 100%;
+    height: 100%;
+
+    @media (max-width: $sm), (max-device-width: $sm) {
+      @include flex(_, flex-start);
+    }
+
+    &_active {
+      position: fixed;
+      top: 0;
+      left: 0;
+      @include flex(_, center);
+      width: 100vw;
+      height: 100vh;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      z-index: 20;
+      overflow-y: auto;
+
+      @media (max-width: $sm), (max-device-width: $sm) {
+        display: block;
+        padding: 0;
+      }
+    }
+  }
+
+  &__content {
+    display: none;
+    width: 100%;
+    padding: 12px 22px;
+    column-gap: 16px;
+    animation: show-menu 0.4s 1 ease-in;
+
+    &_active {
+      @include flex(_, center);
+      animation: show-menu 0.4s 1 ease-in;
+    }
   }
 
   &__img-wrap {
@@ -72,6 +107,7 @@
   &__add-services {
     @include flex(center, _, column);
     row-gap: 6px;
+    width: 120px;
     height: 100%;
     margin: 0 auto;
 
@@ -148,12 +184,7 @@
   }
 
   &__buttons {
-    @include flex;
-    width: 220px;
     margin-left: auto;
-    border: 0.5px solid $gray-blue;
-    border-radius: 4px;
-    overflow: hidden;
 
     @media (max-width: $mx), (max-device-width: $mx) {
       position: absolute;
@@ -163,7 +194,6 @@
     @media (max-width: $sm), (max-device-width: $sm) {
       right: calc(50% - 110px);
     }
-
 
     :nth-child(2) {
       border-left: 0.5px solid $gray-blue;
@@ -194,6 +224,20 @@
       @include flex(center, center);
       width: 7px;
       height: 7px;
+    }
+  }
+
+  &__config {
+    display: none;
+    width: 100%;
+    animation: show-menu 0.4s 1 ease-in;
+
+    &_active {
+      display: block;
+      width: 100%;
+      background: $white;
+      box-shadow: 0px 0px 12px 7px rgba(0, 0, 0, 0.34);
+      animation: show-menu 0.4s 1 ease-in;
     }
   }
 }

@@ -54,6 +54,10 @@
     appearance: none;
     cursor: pointer;
     z-index: 2;
+
+    &_error {
+      border-color: $red;
+    }
   }
 
   &__arrow {
@@ -107,6 +111,29 @@
       &:hover {
         background: $gray-light;
       }
+    }
+  }
+
+  &__error {
+    display: none;
+    position: absolute;
+    bottom: -14px;
+    left: 0;
+    width: 100%;
+    height: 11px;
+    padding: 0 11.5px;
+    font: 400 10px/11px $helvetica-regular;
+    color: $red;
+    letter-spacing: -0.18px;
+
+    @media (max-width: $md), (max-device-width: $md) {
+      bottom: -12px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    &_active {
+      display: block;
     }
   }
 }

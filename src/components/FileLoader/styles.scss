@@ -11,13 +11,16 @@
   overflow: hidden;
 
   &__text {
-    @include flex(_, center);
+    display: block;
     width: calc(100% - 66px);
     height: 100%;
-    padding-left: 13px;
+    padding: 8px 12px;
     font: 400 10px/12px $roboto-regular;
     color: $black-gray;
     letter-spacing: -0.18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__input {
@@ -30,6 +33,7 @@
     @include flex(center, center);
     width: 66px;
     height: 100%;
+    margin-left: auto;
     background: $gray-light;
     font: 400 10px/12px $roboto-regular;
     color: $black-gray;

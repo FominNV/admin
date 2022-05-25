@@ -14,8 +14,8 @@ import "./styles.scss"
 const Form: FC = () => {
   const { admin, error } = useTypedSelector((state) => state.admin)
   const { loading } = useTypedSelector((state) => state.common)
-  const [username, setUsername] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
+  const [username, setUsername] = useState<string>("intern")
+  const [password, setPassword] = useState<string>("intern-S!")
   const [loginError, setLoginError] = useState<Nullable<string>>(null)
   const [passwordError, setPasswordError] = useState<Nullable<string>>(null)
   const [formError, setFormError] = useState<Nullable<string>>(null)
@@ -78,8 +78,10 @@ const Form: FC = () => {
   }, [password, passwordError, fieldWatcher])
 
   useEffect(() => {
-    if (error) {
+    if (error && error.status === 401) {
       setFormError("Почта или пароль введены неверно")
+    } else if (error && error.status !== 401) {
+      setFormError(error.code)
     }
   }, [error])
 
@@ -102,26 +104,31 @@ const Form: FC = () => {
         onSubmit={onSubmitHandler}
       >
         <div className={errorClassName}>{formError}</div>
-        <Input
-          key="email"
-          id="email"
-          label="Почта"
-          type="text"
-          placeholder="Введите E-mail"
-          defaultValue="intern"
-          error={loginError}
-          setState={setUsername}
-        />
-        <Input
-          key="password"
-          id="password"
-          label="Пароль"
-          type="password"
-          placeholder="Введите пароль"
-          defaultValue="intern-S!"
-          error={passwordError}
-          setState={setPassword}
-        />
+
+        <div className="Form__input">
+          <Input
+            key="email"
+            id="email"
+            label="Почта"
+            type="text"
+            placeholder="Введите E-mail"
+            value={username}
+            error={loginError}
+            setState={setUsername}
+          />
+        </div>
+        <div className="Form__input">
+          <Input
+            key="password"
+            id="password"
+            label="Пароль"
+            type="password"
+            placeholder="Введите пароль"
+            value={password}
+            error={passwordError}
+            setState={setPassword}
+          />
+        </div>
 
         <div className="Form__buttons">
           <button className="Form__btn-access">Запросить доступ</button>

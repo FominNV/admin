@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useCallback, useMemo } from "react"
+import { FC, MouseEvent, ReactNode, useCallback, useEffect, useMemo, useRef } from "react"
 import Loading from "components/Loading"
 import { ITableProps } from "./types"
 
@@ -10,13 +10,31 @@ const Table: FC<ITableProps> = ({
   dataColgroup,
   loading,
   tdHeight,
-  callback
+  scrollTop,
+  callback,
+  setScroll
 }) => {
+  const table = useRef<Nullable<HTMLDivElement>>(null)
+
   const onClickHandler = useCallback<EventFunc<MouseEvent<HTMLTableRowElement>>>((e) => {
     if (e.currentTarget.dataset.id && callback) {
       callback(e.currentTarget.dataset.id)
     }
   }, [callback])
+
+  const onScrollHandler = useCallback<EventFunc<MouseEvent<HTMLTableElement>>>((e) => {
+    if (setScroll) {
+      setScroll(e.currentTarget.scrollTop)
+    }
+  }, [setScroll])
+
+  useEffect(() => {
+    if (scrollTop && table.current && !loading) {
+      setTimeout(() => {
+        table.current?.scrollBy(0, scrollTop)
+      })
+    }
+  }, [loading])
 
   const colgroup = useMemo<ReactNode>(
     () => (
@@ -97,7 +115,11 @@ const Table: FC<ITableProps> = ({
           <thead className="Table__thead">{thead}</thead>
         </table>
       </div>
-      <div className="Table__table-b-wrap">
+      <div
+        className="Table__table-b-wrap"
+        ref={table}
+        onScroll={onScrollHandler}
+      >
         <table className="Table__table">
           {colgroup}
           <tbody className="Table__tbody">{tbody}</tbody>

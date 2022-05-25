@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react"
 import { useTypedSelector } from "store/selectors"
@@ -18,7 +19,7 @@ import { ButtonBgColor } from "components/Button/types"
 import { IFilterState, IFilterPoints } from "components/FilterPoint/types"
 import Loading from "components/Loading"
 import { URLS } from "api/Axios/data"
-import { AdminActionTypes } from "store/admin/types"
+import { AdminActionTypes, AdminMenu } from "store/admin/types"
 import OrderCard from "../OrderCard"
 import FilterPoint from "../../../FilterPoint"
 import { dataFilterPoint } from "./data"
@@ -26,16 +27,11 @@ import { dataFilterPoint } from "./data"
 import "./styles.scss"
 
 const Order: FC = () => {
-  const {
-    admin,
-    adminMenu,
-    orders,
-    cities,
-    rates,
-    statuses
-  } = useTypedSelector((state) => state.admin)
+  const { adminToken, adminMenu, orders, cities, rates, statuses } =
+    useTypedSelector((state) => state.admin)
   const { loading } = useTypedSelector((state) => state.common)
   const [pageNumber, setPageNumber] = useState<number>(1)
+  const [scrollTop, setScrollTop] = useState<number>(0)
   const [city, setCity] = useState<IFilterState>({ id: "", name: "Любой" })
   const [rate, setRate] = useState<IFilterState>({ id: "", name: "Любой" })
   const [status, setStatus] = useState<IFilterState>({ id: "", name: "Любой" })
@@ -44,14 +40,21 @@ const Order: FC = () => {
     rate: null,
     status: null
   })
+  const contentBlock = useRef<Nullable<HTMLDivElement>>(null)
   const dispatch = useDispatch()
+
+  const setCurrentScroll = useCallback<VoidFunc<void>>(() => {
+    if (contentBlock.current) {
+      setScrollTop(contentBlock.current.scrollTop)
+    }
+  }, [])
 
   const setCityState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
         setCity({ id: "", name: "Любой" })
-      } else {
-        cities?.data.map((elem) => {
+      } else if (cities.all && name !== "Любой") {
+        cities.all.data.map((elem) => {
           if (elem.name === name) {
             setCity({
               id: elem.id,
@@ -61,15 +64,15 @@ const Order: FC = () => {
         })
       }
     },
-    [cities]
+    [cities.all]
   )
 
   const setStatusState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
         setStatus({ id: "", name: "Любой" })
-      } else {
-        statuses?.data.map((elem) => {
+      } else if (statuses.all && name !== "Любой") {
+        statuses.all.data.map((elem) => {
           if (elem.name === name) {
             setStatus({
               id: elem.id,
@@ -79,14 +82,15 @@ const Order: FC = () => {
         })
       }
     },
-    [statuses]
+    [statuses.all]
   )
+
   const setRateState = useCallback<VoidFunc<string>>(
     (name) => {
       if (name === "Любой") {
         setRate({ id: "", name: "Любой" })
-      } else {
-        rates?.data.map((elem) => {
+      } else if (rates.all && name !== "Любой") {
+        rates.all.data.map((elem) => {
           if (elem.rateTypeId && elem.rateTypeId.name === name) {
             setRate({
               id: elem.id,
@@ -96,7 +100,7 @@ const Order: FC = () => {
         })
       }
     },
-    [rates]
+    [rates.all]
   )
 
   const loadOrders = useCallback<VoidFunc<Nullable<string | number>>>(
@@ -105,8 +109,8 @@ const Order: FC = () => {
       await dispatch(
         getEntities(
           URLS.ADMIN_ORDER_URL,
-          AdminActionTypes.GET_ORDERS,
-          { page, cityId, rateId, orderStatusId },
+          AdminActionTypes.GET_LIMIT_ORDERS,
+          { limit: 20, page, cityId, rateId, orderStatusId },
           token as string
         )
       )
@@ -133,31 +137,44 @@ const Order: FC = () => {
   }, [])
 
   useEffect(() => {
-    if (admin && adminMenu === "Заказы") {
+    if (adminToken && !orders.limit && adminMenu === AdminMenu.ORDER) {
+      loadOrders(adminToken, pageNumber - 1)
+    }
+  }, [adminToken, orders.limit, adminMenu, pageNumber, loadOrders])
+
+  useEffect(() => {
+    if (adminToken && adminMenu === AdminMenu.ORDER) {
       const currentCityId = filterPoints.city ? filterPoints.city.id : null
-      const currentRateId = filterPoints.rate ? filterPoints.rate?.id : null
+      const currentRateId = filterPoints.rate ? filterPoints.rate.id : null
       const currentStatusId = filterPoints.status
         ? filterPoints.status?.id
         : null
       loadOrders(
-        admin.access_token,
+        adminToken,
         pageNumber - 1,
         currentCityId,
         currentRateId,
         currentStatusId
       )
     }
-  }, [admin, adminMenu, pageNumber, filterPoints, loadOrders])
+  }, [adminToken, orders.updated, pageNumber, filterPoints, loadOrders])
 
   useEffect(() => {
-    if (!cities && admin) { dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_CITIES)) }
-    if (!rates && admin) { dispatch(getEntities(URLS.RATE_URL, AdminActionTypes.GET_RATES)) }
-    if (!statuses && admin) {
+    if (!cities.all && adminToken && adminMenu === AdminMenu.ORDER) {
+      dispatch(getEntities(URLS.CITY_URL, AdminActionTypes.GET_ALL_CITIES))
+    }
+    if (!rates.all && adminToken && adminMenu === AdminMenu.ORDER) {
+      dispatch(getEntities(URLS.RATE_URL, AdminActionTypes.GET_ALL_RATES))
+    }
+    if (!statuses.all && adminToken && adminMenu === AdminMenu.ORDER) {
       dispatch(
-        getEntities(URLS.ORDER_STATUS_URL, AdminActionTypes.GET_ORDER_STATUSES)
+        getEntities(
+          URLS.ORDER_STATUS_URL,
+          AdminActionTypes.GET_ALL_ORDER_STATUSES
+        )
       )
     }
-  }, [cities, rates, statuses, admin, dispatch])
+  }, [cities.all, rates.all, statuses.all, adminToken, adminMenu, dispatch])
 
   useEffect(() => {
     if (!filterPoints.city) setCity({ id: "", name: "Любой" })
@@ -165,11 +182,20 @@ const Order: FC = () => {
     if (!filterPoints.status) setStatus({ id: "", name: "Любой" })
   }, [filterPoints])
 
-  const result = orders ? orders.count : 0
+  useEffect(() => {
+    if (!loading && contentBlock.current && scrollTop) {
+      setTimeout(() => {
+        contentBlock.current?.scrollBy(0, scrollTop)
+        setScrollTop(0)
+      })
+    }
+  }, [loading, contentBlock])
+
+  const result = orders.limit ? orders.limit.count : 0
 
   const citySelect = useMemo<ReactNode>(() => {
-    if (cities) {
-      const data: string[] = cities.data.map((elem) => elem.name)
+    if (cities.all) {
+      const data: string[] = cities.all.data.map((elem) => elem.name)
       return (
         <Select
           key="order_city_select"
@@ -182,11 +208,11 @@ const Order: FC = () => {
       )
     }
     return false
-  }, [cities, city.name, setCityState])
+  }, [cities.all, city.name, setCityState])
 
   const rateSelect = useMemo<ReactNode>(() => {
-    if (rates) {
-      const data: string[] = rates.data.map((elem) => {
+    if (rates.all) {
+      const data: string[] = rates.all.data.map((elem) => {
         return elem.rateTypeId ? elem.rateTypeId.name : "НЕ УКАЗАНО"
       })
       return (
@@ -201,11 +227,11 @@ const Order: FC = () => {
       )
     }
     return false
-  }, [rates, rate.name, setRateState])
+  }, [rates.all, rate.name, setRateState])
 
   const statusSelect = useMemo<ReactNode>(() => {
-    if (statuses) {
-      const data: string[] = statuses.data.map((elem) => elem.name)
+    if (statuses.all) {
+      const data: string[] = statuses.all.data.map((elem) => elem.name)
       return (
         <Select
           key="order_status_select"
@@ -218,7 +244,7 @@ const Order: FC = () => {
       )
     }
     return false
-  }, [statuses, status.name, setStatusState])
+  }, [statuses.all, status.name, setStatusState])
 
   const orderFilterPoints = useMemo<ReactNode>(
     () =>
@@ -237,7 +263,7 @@ const Order: FC = () => {
     [filterPoints]
   )
 
-  const clearFilterButton = useMemo(
+  const clearFilterButton = useMemo<ReactNode>(
     () =>
       (filterPoints.city || filterPoints.rate || filterPoints.status) && (
         <div className="Order__btn-clear-filter">
@@ -258,32 +284,36 @@ const Order: FC = () => {
 
   const cards = useMemo<ReactNode>(
     () =>
-      orders &&
-      orders.data.map((elem) => (
+      orders.limit &&
+      orders.limit.data.map((elem) => (
         <OrderCard
           key={`order_card_${elem.id}`}
           order={elem}
+          setCurrentScroll={setCurrentScroll}
         />
       )),
-    [orders]
+    [orders.limit, setCurrentScroll]
   )
 
   const fetching = useMemo<ReactNode>(() => loading && <Loading />, [loading])
 
-  const content = useMemo<ReactNode>(() => fetching || cards, [fetching, cards])
+  const content = useMemo<ReactNode>(
+    () => fetching || cards,
+    [fetching, cards]
+  )
 
   const pagination = useMemo<ReactNode>(
     () =>
-      orders &&
-      Math.ceil(orders.count / 20) > 1 && (
+      orders.limit &&
+      Math.ceil(orders.limit.count / 20) > 1 && (
         <Paginater
-          pageCount={Math.ceil(orders.count / 20)}
+          pageCount={Math.ceil(orders.limit.count / 20)}
           currentNumber={pageNumber}
           disabled={loading}
           setState={setPageNumber}
         />
       ),
-    [orders, pageNumber, loading]
+    [orders.limit, pageNumber, loading]
   )
 
   return (
@@ -312,7 +342,12 @@ const Order: FC = () => {
         </div>
       </div>
 
-      <div className="Order__content">{content}</div>
+      <div
+        className="Order__content"
+        ref={contentBlock}
+      >
+        {content}
+      </div>
       <div className="Order__paginater">{pagination}</div>
     </div>
   )

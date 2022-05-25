@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useCallback } from "react"
+import { FC, MouseEvent, useCallback, useEffect } from "react"
 import classNames from "classnames"
 import { ReactComponent as Check } from "assets/icons/Checkbox/check.svg"
 import { ICheckboxProps } from "./types"
@@ -8,8 +8,13 @@ import "./styles.scss"
 const Checkbox: FC<ICheckboxProps> = ({ id, label, checked, disabled, setState }) => {
   const onClickHandler = useCallback<EventFunc<MouseEvent>>((e) => {
     e.preventDefault()
-    setState((prev) => !prev)
-  }, [setState])
+    setState((state) => {
+      if (state.includes(label)) {
+        return state.filter((elem) => elem !== label)
+      }
+      return [...state, label]
+    })
+  }, [label, setState])
 
   const checkboxCustomClassName = classNames("Checkbox__custom", {
     Checkbox__custom_checked: checked
